@@ -2,6 +2,8 @@
 
 Aplicación web donde cada usuario registra, organiza y califica las películas y series que quiere ver, está viendo o ya vio. Busca títulos reales en la API de TMDB y guarda su propia versión (estado, calificación y comentario) en una base de datos de Supabase protegida con autenticación y Row Level Security.
 
+**App publicada:** https://tu-enlace.vercel.app
+
 ## Tecnologías
 
 - React + TypeScript (Vite)
