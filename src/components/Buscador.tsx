@@ -4,7 +4,11 @@ import { buscarTitulos } from '../lib/tmdb'
 import { agregarALista } from '../lib/lista'
 import type { ResultadoTMDB } from '../types'
 
-export default function Buscador() {
+interface BuscadorProps {
+  onAgregado?: () => void
+}
+
+export default function Buscador({ onAgregado }: BuscadorProps) {
   const [texto, setTexto] = useState('')
   const [resultados, setResultados] = useState<ResultadoTMDB[]>([])
   const [cargando, setCargando] = useState(false)
@@ -12,6 +16,7 @@ export default function Buscador() {
   const [buscado, setBuscado] = useState(false)
   const [agregando, setAgregando] = useState<string | null>(null)
   const [mensaje, setMensaje] = useState<string | null>(null)
+  const [agregados, setAgregados] = useState<string[]>([])
 
   async function buscar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -37,6 +42,8 @@ export default function Buscador() {
     setMensaje(null)
     try {
       await agregarALista(titulo)
+      onAgregado?.()
+      setAgregados((prev) => [...prev, `${titulo.tipo}-${titulo.id}`])
       setMensaje(`"${titulo.titulo}" se agregó a tu lista.`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'No se pudo agregar')
@@ -67,16 +74,21 @@ export default function Buscador() {
       <ul>
         {resultados.map((r) => {
           const clave = `${r.tipo}-${r.id}`
+          const yaAgregado = agregados.includes(clave)
           return (
             <li key={clave}>
+
               {r.posterUrl ? (
                 <img src={r.posterUrl} alt={r.titulo} width={120} />
               ) : (
                 <div>Sin póster</div>
               )}
               <strong>{r.titulo}</strong> ({r.anio || 's/f'}) - {r.tipo}
-              <button onClick={() => agregar(r)} disabled={agregando === clave}>
-                {agregando === clave ? 'Agregando...' : 'Agregar a mi lista'}
+                            <button
+                onClick={() => agregar(r)}
+                disabled={agregando === clave || yaAgregado}
+              >
+                {yaAgregado ? '✓ Agregado' : agregando === clave ? 'Agregando...' : 'Agregar a mi lista'}
               </button>
             </li>
           )

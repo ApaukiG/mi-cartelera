@@ -3,7 +3,11 @@ import { obtenerLista, actualizarTitulo, eliminarTitulo } from '../lib/lista'
 import type { Estado, TituloGuardado } from '../types'
 import Detalle from './Detalle'
 
-export default function MiLista() {
+interface MiListaProps {
+  recarga?: number
+}
+
+export default function MiLista({ recarga = 0 }: MiListaProps) {
   const [titulos, setTitulos] = useState<TituloGuardado[]>([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -16,7 +20,7 @@ export default function MiLista() {
         setError(err instanceof Error ? err.message : 'No se pudo cargar tu lista')
       )
       .finally(() => setCargando(false))
-  }, [])
+  }, [recarga])
 
   async function cambiarEstado(id: number, estado: Estado) {
     setError(null)
