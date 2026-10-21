@@ -1,4 +1,4 @@
-import type { ResultadoTMDB } from '../types'
+import type { ResultadoTMDB, TipoContenido } from '../types'
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY
 const IMG_BASE = 'https://image.tmdb.org/t/p/w342'
@@ -34,4 +34,33 @@ export async function buscarTitulos(texto: string): Promise<ResultadoTMDB[]> {
       posterUrl: r.poster_path ? IMG_BASE + r.poster_path : null,
       anio: (r.release_date ?? r.first_air_date ?? '').slice(0, 4),
     }))
+}
+
+export interface DetalleTMDB {
+  sinopsis: string
+  posterGrande: string | null
+  elenco: string[]
+  calificacionTMDB: number | null
+}
+
+export async function obtenerDetalle(
+  tmdbId: number,
+  tipo: TipoContenido
+): Promise<DetalleTMDB> {
+  const ruta = tipo === 'pelicula' ? 'movie' : 'tv'
+  const url =
+    `https://api.themoviedb.org/3/${ruta}/${tmdbId}` +
+    `?api_key=${API_KEY}&language=es-ES&append_to_response=credits`
+
+  const respuesta = await fetch(url)
+  if (!respuesta.ok) throw new Error(`Error de TMDB (${respuesta.status})`)
+
+  const d = await respuesta.json()
+
+  return {
+    sinopsis: d.overview || 'Sin sinopsis disponible.',
+    posterGrande: d.poster_path ? 'https://image.tmdb.org/t/p/w500' + d.poster_path : null,
+    elenco: (d.credits?.cast ?? []).slice(0, 8).map((c: { name: string }) => c.name),
+    calificacionTMDB: typeof d.vote_average === 'number' ? d.vote_average : null,
+  }
 }

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { obtenerLista, actualizarTitulo, eliminarTitulo } from '../lib/lista'
 import type { Estado, TituloGuardado } from '../types'
+import Detalle from './Detalle'
 
 export default function MiLista() {
   const [titulos, setTitulos] = useState<TituloGuardado[]>([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [seleccionado, setSeleccionado] = useState<TituloGuardado | null>(null)
 
   useEffect(() => {
     obtenerLista()
@@ -64,6 +66,10 @@ export default function MiLista() {
     }
   }
 
+    if (seleccionado) {
+    return <Detalle titulo={seleccionado} onVolver={() => setSeleccionado(null)} />
+  }
+
   return (
     <section>
       <h2>Mi lista</h2>
@@ -83,6 +89,7 @@ export default function MiLista() {
               <div>Sin póster</div>
             )}
             <strong>{t.titulo}</strong> - {t.tipo_contenido}
+            <button onClick={() => setSeleccionado(t)}>Ver detalle</button>
             <select
               value={t.estado}
               onChange={(e) => cambiarEstado(t.id, e.target.value as Estado)}
