@@ -77,4 +77,16 @@ create policy "borrar solo lo mio" on mi_lista
 
 ## Capturas de pantalla
 
-(Aquí van las capturas: login, buscador, mi lista y detalle.)
+## Capturas de pantalla
+
+### Inicio de sesión
+![Pantalla de login](capturas/login.png)
+
+### Buscador de TMDB
+![Buscador con resultados](capturas/buscador.png)
+
+### Mi lista
+![Mi lista con contador, filtros y pósters](capturas/mi-lista.png)
+
+### Detalle de un título
+![Página de detalle](capturas/detalle.png)
