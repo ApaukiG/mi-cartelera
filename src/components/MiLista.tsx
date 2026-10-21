@@ -12,6 +12,7 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [seleccionado, setSeleccionado] = useState<TituloGuardado | null>(null)
+  const [filtro, setFiltro] = useState<Estado | 'todas'>('todas')
 
   useEffect(() => {
     obtenerLista()
@@ -70,10 +71,12 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
     }
   }
 
-    const pendientes = titulos.filter((t) => t.estado === 'por_ver').length
+  const pendientes = titulos.filter((t) => t.estado === 'por_ver').length
   const enProgreso = titulos.filter((t) => t.estado === 'viendo').length
   const vistas = titulos.filter((t) => t.estado === 'vista').length
+  const visibles = filtro === 'todas' ? titulos : titulos.filter((t) => t.estado === filtro)
 
+  
     if (seleccionado) {
     return <Detalle titulo={seleccionado} onVolver={() => setSeleccionado(null)} />
   }
@@ -87,6 +90,16 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
         </p>
       )}
 
+      <select value={filtro} onChange={(e) => setFiltro(e.target.value as Estado | 'todas')}>
+        <option value="todas">Todas</option>
+        <option value="por_ver">Por ver</option>
+        <option value="viendo">Viendo</option>
+        <option value="vista">Vistas</option>
+      </select>
+      {!cargando && !error && titulos.length > 0 && visibles.length === 0 && (
+        <p>No tienes títulos con ese estado.</p>
+      )}
+
       {cargando && <p>Cargando tu lista...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {!cargando && !error && titulos.length === 0 && (
@@ -94,7 +107,7 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
       )}
 
       <ul>
-        {titulos.map((t) => (
+          {visibles.map((t) => (
           <li key={t.id}>
             {t.poster_url ? (
               <img src={t.poster_url} alt={t.titulo} width={120} />
