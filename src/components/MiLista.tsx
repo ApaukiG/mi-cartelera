@@ -39,6 +39,20 @@ export default function MiLista() {
     }
   }
 
+    async function cambiarComentario(id: number, texto: string) {
+    const nuevo = texto.trim() === '' ? null : texto.trim()
+    const actual = titulos.find((t) => t.id === id)?.comentario ?? null
+    if (nuevo === actual) return
+
+    setError(null)
+    try {
+      await actualizarTitulo(id, { comentario: nuevo })
+      setTitulos((prev) => prev.map((t) => (t.id === id ? { ...t, comentario: nuevo } : t)))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo guardar el comentario')
+    }
+  }
+
   async function eliminar(id: number) {
     if (!window.confirm('¿Eliminar este título de tu lista?')) return
     setError(null)
@@ -86,6 +100,12 @@ export default function MiLista() {
                 <option key={n} value={n}>{n} ★</option>
               ))}
             </select>
+                        <input
+              type="text"
+              placeholder="Tu comentario..."
+              defaultValue={t.comentario ?? ''}
+              onBlur={(e) => cambiarComentario(t.id, e.target.value)}
+            />
             <button onClick={() => eliminar(t.id)}>Eliminar</button>
           </li>
         ))}
