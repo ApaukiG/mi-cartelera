@@ -26,6 +26,19 @@ export default function MiLista() {
     }
   }
 
+    async function cambiarCalificacion(id: number, valor: string) {
+    const calificacion = valor === '' ? null : Number(valor)
+    setError(null)
+    try {
+      await actualizarTitulo(id, { calificacion_personal: calificacion })
+      setTitulos((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, calificacion_personal: calificacion } : t))
+      )
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo guardar la calificación')
+    }
+  }
+
   async function eliminar(id: number) {
     if (!window.confirm('¿Eliminar este título de tu lista?')) return
     setError(null)
@@ -63,6 +76,15 @@ export default function MiLista() {
               <option value="por_ver">Por ver</option>
               <option value="viendo">Viendo</option>
               <option value="vista">Vista</option>
+            </select>
+                        <select
+              value={t.calificacion_personal ?? ''}
+              onChange={(e) => cambiarCalificacion(t.id, e.target.value)}
+            >
+              <option value="">Sin calificar</option>
+              {[1, 2, 3, 4, 5].map((n) => (
+                <option key={n} value={n}>{n} ★</option>
+              ))}
             </select>
             <button onClick={() => eliminar(t.id)}>Eliminar</button>
           </li>
