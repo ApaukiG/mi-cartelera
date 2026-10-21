@@ -70,6 +70,10 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
     }
   }
 
+    const pendientes = titulos.filter((t) => t.estado === 'por_ver').length
+  const enProgreso = titulos.filter((t) => t.estado === 'viendo').length
+  const vistas = titulos.filter((t) => t.estado === 'vista').length
+
     if (seleccionado) {
     return <Detalle titulo={seleccionado} onVolver={() => setSeleccionado(null)} />
   }
@@ -77,6 +81,11 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
   return (
     <section>
       <h2>Mi lista</h2>
+            {!cargando && !error && titulos.length > 0 && (
+        <p>
+          Tienes {pendientes} pendientes, {enProgreso} en progreso, {vistas} vistas.
+        </p>
+      )}
 
       {cargando && <p>Cargando tu lista...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
