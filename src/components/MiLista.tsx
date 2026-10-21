@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { obtenerLista } from '../lib/lista'
-import type { TituloGuardado } from '../types'
+import { obtenerLista, actualizarTitulo, eliminarTitulo } from '../lib/lista'
+import type { Estado, TituloGuardado } from '../types'
 
 export default function MiLista() {
   const [titulos, setTitulos] = useState<TituloGuardado[]>([])
@@ -15,6 +15,27 @@ export default function MiLista() {
       )
       .finally(() => setCargando(false))
   }, [])
+
+  async function cambiarEstado(id: number, estado: Estado) {
+    setError(null)
+    try {
+      await actualizarTitulo(id, { estado })
+      setTitulos((prev) => prev.map((t) => (t.id === id ? { ...t, estado } : t)))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo actualizar')
+    }
+  }
+
+  async function eliminar(id: number) {
+    if (!window.confirm('¿Eliminar este título de tu lista?')) return
+    setError(null)
+    try {
+      await eliminarTitulo(id)
+      setTitulos((prev) => prev.filter((t) => t.id !== id))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo eliminar')
+    }
+  }
 
   return (
     <section>
@@ -34,7 +55,16 @@ export default function MiLista() {
             ) : (
               <div>Sin póster</div>
             )}
-            <strong>{t.titulo}</strong> - {t.tipo_contenido} - {t.estado}
+            <strong>{t.titulo}</strong> - {t.tipo_contenido}
+            <select
+              value={t.estado}
+              onChange={(e) => cambiarEstado(t.id, e.target.value as Estado)}
+            >
+              <option value="por_ver">Por ver</option>
+              <option value="viendo">Viendo</option>
+              <option value="vista">Vista</option>
+            </select>
+            <button onClick={() => eliminar(t.id)}>Eliminar</button>
           </li>
         ))}
       </ul>
