@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from './lib/supabase'
 import Auth from './components/Auth'
+import Buscador from './components/Buscador'
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -33,7 +34,7 @@ function App() {
         <button onClick={() => supabase.auth.signOut()}>Cerrar sesión</button>
       </header>
       <main>
-        <p>Aquí irá tu lista de películas.</p>
+        <Buscador />
       </main>
     </div>
   )
