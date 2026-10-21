@@ -13,6 +13,7 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
   const [error, setError] = useState<string | null>(null)
   const [seleccionado, setSeleccionado] = useState<TituloGuardado | null>(null)
   const [filtro, setFiltro] = useState<Estado | 'todas'>('todas')
+  const [orden, setOrden] = useState<'recientes' | 'calificacion'>('recientes')
 
   useEffect(() => {
     obtenerLista()
@@ -74,7 +75,13 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
   const pendientes = titulos.filter((t) => t.estado === 'por_ver').length
   const enProgreso = titulos.filter((t) => t.estado === 'viendo').length
   const vistas = titulos.filter((t) => t.estado === 'vista').length
-  const visibles = filtro === 'todas' ? titulos : titulos.filter((t) => t.estado === filtro)
+  const filtrados = filtro === 'todas' ? titulos : titulos.filter((t) => t.estado === filtro)
+  const visibles =
+    orden === 'calificacion'
+      ? [...filtrados].sort(
+          (a, b) => (b.calificacion_personal ?? 0) - (a.calificacion_personal ?? 0)
+        )
+      : filtrados
 
   
     if (seleccionado) {
@@ -96,6 +103,15 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
         <option value="viendo">Viendo</option>
         <option value="vista">Vistas</option>
       </select>
+
+            <select
+        value={orden}
+        onChange={(e) => setOrden(e.target.value as 'recientes' | 'calificacion')}
+      >
+        <option value="recientes">Más recientes primero</option>
+        <option value="calificacion">Mejor calificadas primero</option>
+      </select>
+      
       {!cargando && !error && titulos.length > 0 && visibles.length === 0 && (
         <p>No tienes títulos con ese estado.</p>
       )}
