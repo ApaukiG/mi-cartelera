@@ -9,7 +9,10 @@ export async function agregarALista(titulo: ResultadoTMDB) {
     tipo_contenido: titulo.tipo,
   })
 
-  if (error) throw new Error(error.message)
+  if (error) {
+    if (error.code === '23505') throw new Error('Ese título ya está en tu lista.')
+    throw new Error(error.message)
+  }
 }
 
 export async function obtenerLista(): Promise<TituloGuardado[]> {
