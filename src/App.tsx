@@ -3,6 +3,8 @@ import type { Session } from '@supabase/supabase-js'
 import { supabase } from './lib/supabase'
 import Auth from './components/Auth'
 import Buscador from './components/Buscador'
+import MiLista from './components/MiLista'
+
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -35,6 +37,7 @@ function App() {
       </header>
       <main>
         <Buscador />
+        <MiLista />
       </main>
     </div>
   )

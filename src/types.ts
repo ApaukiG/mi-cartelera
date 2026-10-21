@@ -8,3 +8,15 @@ export interface ResultadoTMDB {
   posterUrl: string | null
   anio: string
 }
+
+export interface TituloGuardado {
+  id: number
+  tmdb_id: number
+  titulo: string
+  poster_url: string | null
+  tipo_contenido: TipoContenido
+  estado: Estado
+  calificacion_personal: number | null
+  comentario: string | null
+  fecha_agregado: string
+}
