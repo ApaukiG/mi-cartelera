@@ -45,7 +45,7 @@ export interface DetalleTMDB {
 
 export async function obtenerDetalle(
   tmdbId: number,
-  tipo: TipoContenido
+  tipo: TipoContenido,
 ): Promise<DetalleTMDB> {
   const ruta = tipo === 'pelicula' ? 'movie' : 'tv'
   const url =
@@ -59,8 +59,13 @@ export async function obtenerDetalle(
 
   return {
     sinopsis: d.overview || 'Sin sinopsis disponible.',
-    posterGrande: d.poster_path ? 'https://image.tmdb.org/t/p/w500' + d.poster_path : null,
-    elenco: (d.credits?.cast ?? []).slice(0, 8).map((c: { name: string }) => c.name),
-    calificacionTMDB: typeof d.vote_average === 'number' ? d.vote_average : null,
+    posterGrande: d.poster_path
+      ? 'https://image.tmdb.org/t/p/w500' + d.poster_path
+      : null,
+    elenco: (d.credits?.cast ?? [])
+      .slice(0, 8)
+      .map((c: { name: string }) => c.name),
+    calificacionTMDB:
+      typeof d.vote_average === 'number' ? d.vote_average : null,
   }
 }

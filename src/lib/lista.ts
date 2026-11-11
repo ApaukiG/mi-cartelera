@@ -10,7 +10,8 @@ export async function agregarALista(titulo: ResultadoTMDB) {
   })
 
   if (error) {
-    if (error.code === '23505') throw new Error('Ese título ya está en tu lista.')
+    if (error.code === '23505')
+      throw new Error('Ese título ya está en tu lista.')
     throw new Error(error.message)
   }
 }

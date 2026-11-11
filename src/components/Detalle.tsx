@@ -17,7 +17,9 @@ export default function Detalle({ titulo, onVolver }: DetalleProps) {
     obtenerDetalle(titulo.tmdb_id, titulo.tipo_contenido)
       .then(setDetalle)
       .catch((err) =>
-        setError(err instanceof Error ? err.message : 'No se pudo cargar el detalle')
+        setError(
+          err instanceof Error ? err.message : 'No se pudo cargar el detalle',
+        ),
       )
       .finally(() => setCargando(false))
   }, [titulo.tmdb_id, titulo.tipo_contenido])
@@ -39,15 +41,27 @@ export default function Detalle({ titulo, onVolver }: DetalleProps) {
           <p>{detalle.sinopsis}</p>
 
           <h3>Elenco</h3>
-          <p>{detalle.elenco.length > 0 ? detalle.elenco.join(', ') : 'Sin información de elenco.'}</p>
+          <p>
+            {detalle.elenco.length > 0
+              ? detalle.elenco.join(', ')
+              : 'Sin información de elenco.'}
+          </p>
 
           <h3>Calificación oficial (TMDB)</h3>
-          <p>{detalle.calificacionTMDB !== null ? `${detalle.calificacionTMDB.toFixed(1)} / 10` : 'Sin calificación.'}</p>
+          <p>
+            {detalle.calificacionTMDB !== null
+              ? `${detalle.calificacionTMDB.toFixed(1)} / 10`
+              : 'Sin calificación.'}
+          </p>
         </div>
       )}
 
       <h3>Mi calificación</h3>
-      <p>{titulo.calificacion_personal !== null ? `${titulo.calificacion_personal} ★` : 'Sin calificar'}</p>
+      <p>
+        {titulo.calificacion_personal !== null
+          ? `${titulo.calificacion_personal} ★`
+          : 'Sin calificar'}
+      </p>
 
       <h3>Mi comentario</h3>
       <p>{titulo.comentario ?? 'Sin comentario.'}</p>

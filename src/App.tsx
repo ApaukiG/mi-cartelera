@@ -5,7 +5,6 @@ import Auth from './components/Auth'
 import Buscador from './components/Buscador'
 import MiLista from './components/MiLista'
 
-
 function App() {
   const [session, setSession] = useState<Session | null>(null)
   const [cargando, setCargando] = useState(true)
@@ -37,8 +36,8 @@ function App() {
         <button onClick={() => supabase.auth.signOut()}>Cerrar sesión</button>
       </header>
       <main>
-          <Buscador onAgregado={() => setRecarga((n) => n + 1)} />
-          <MiLista recarga={recarga} />
+        <Buscador onAgregado={() => setRecarga((n) => n + 1)} />
+        <MiLista recarga={recarga} />
       </main>
     </div>
   )

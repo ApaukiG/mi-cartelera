@@ -19,7 +19,9 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
     obtenerLista()
       .then(setTitulos)
       .catch((err) =>
-        setError(err instanceof Error ? err.message : 'No se pudo cargar tu lista')
+        setError(
+          err instanceof Error ? err.message : 'No se pudo cargar tu lista',
+        ),
       )
       .finally(() => setCargando(false))
   }, [recarga])
@@ -28,26 +30,34 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
     setError(null)
     try {
       await actualizarTitulo(id, { estado })
-      setTitulos((prev) => prev.map((t) => (t.id === id ? { ...t, estado } : t)))
+      setTitulos((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, estado } : t)),
+      )
     } catch (err) {
       setError(err instanceof Error ? err.message : 'No se pudo actualizar')
     }
   }
 
-    async function cambiarCalificacion(id: number, valor: string) {
+  async function cambiarCalificacion(id: number, valor: string) {
     const calificacion = valor === '' ? null : Number(valor)
     setError(null)
     try {
       await actualizarTitulo(id, { calificacion_personal: calificacion })
       setTitulos((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, calificacion_personal: calificacion } : t))
+        prev.map((t) =>
+          t.id === id ? { ...t, calificacion_personal: calificacion } : t,
+        ),
       )
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudo guardar la calificación')
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'No se pudo guardar la calificación',
+      )
     }
   }
 
-    async function cambiarComentario(id: number, texto: string) {
+  async function cambiarComentario(id: number, texto: string) {
     const nuevo = texto.trim() === '' ? null : texto.trim()
     const actual = titulos.find((t) => t.id === id)?.comentario ?? null
     if (nuevo === actual) return
@@ -55,9 +65,13 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
     setError(null)
     try {
       await actualizarTitulo(id, { comentario: nuevo })
-      setTitulos((prev) => prev.map((t) => (t.id === id ? { ...t, comentario: nuevo } : t)))
+      setTitulos((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, comentario: nuevo } : t)),
+      )
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudo guardar el comentario')
+      setError(
+        err instanceof Error ? err.message : 'No se pudo guardar el comentario',
+      )
     }
   }
 
@@ -75,43 +89,52 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
   const pendientes = titulos.filter((t) => t.estado === 'por_ver').length
   const enProgreso = titulos.filter((t) => t.estado === 'viendo').length
   const vistas = titulos.filter((t) => t.estado === 'vista').length
-  const filtrados = filtro === 'todas' ? titulos : titulos.filter((t) => t.estado === filtro)
+  const filtrados =
+    filtro === 'todas' ? titulos : titulos.filter((t) => t.estado === filtro)
   const visibles =
     orden === 'calificacion'
       ? [...filtrados].sort(
-          (a, b) => (b.calificacion_personal ?? 0) - (a.calificacion_personal ?? 0)
+          (a, b) =>
+            (b.calificacion_personal ?? 0) - (a.calificacion_personal ?? 0),
         )
       : filtrados
 
-  
-    if (seleccionado) {
-    return <Detalle titulo={seleccionado} onVolver={() => setSeleccionado(null)} />
+  if (seleccionado) {
+    return (
+      <Detalle titulo={seleccionado} onVolver={() => setSeleccionado(null)} />
+    )
   }
 
   return (
     <section>
       <h2>Mi lista</h2>
-            {!cargando && !error && titulos.length > 0 && (
+      {!cargando && !error && titulos.length > 0 && (
         <p>
-          Tienes {pendientes} pendientes, {enProgreso} en progreso, {vistas} vistas.
+          Tienes {pendientes} pendientes, {enProgreso} en progreso, {vistas}{' '}
+          vistas.
         </p>
       )}
 
-      <select value={filtro} onChange={(e) => setFiltro(e.target.value as Estado | 'todas')}>
+      <select
+        value={filtro}
+        onChange={(e) => setFiltro(e.target.value as Estado | 'todas')}
+      >
         <option value="todas">Todas</option>
         <option value="por_ver">Por ver</option>
         <option value="viendo">Viendo</option>
         <option value="vista">Vistas</option>
       </select>
 
-            <select
+      <select
         value={orden}
-        onChange={(e) => setOrden(e.target.value as 'recientes' | 'calificacion')}
+        onChange={(e) =>
+          setOrden(e.target.value as 'recientes' | 'calificacion')
+        }
       >
         <option value="recientes">Más recientes primero</option>
         <option value="calificacion">Mejor calificadas primero</option>
       </select>
-      
+
       {!cargando && !error && titulos.length > 0 && visibles.length === 0 && (
         <p>No tienes títulos con ese estado.</p>
       )}
@@ -123,7 +146,7 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
       )}
 
       <ul>
-          {visibles.map((t) => (
+        {visibles.map((t) => (
           <li key={t.id}>
             {t.poster_url ? (
               <img src={t.poster_url} alt={t.titulo} width={120} />
@@ -140,16 +163,18 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
               <option value="viendo">Viendo</option>
               <option value="vista">Vista</option>
             </select>
-                        <select
+            <select
               value={t.calificacion_personal ?? ''}
               onChange={(e) => cambiarCalificacion(t.id, e.target.value)}
             >
               <option value="">Sin calificar</option>
               {[1, 2, 3, 4, 5].map((n) => (
-                <option key={n} value={n}>{n} ★</option>
+                <option key={n} value={n}>
+                  {n} ★
+                </option>
               ))}
             </select>
-                        <input
+            <input
               type="text"
               placeholder="Tu comentario..."
               defaultValue={t.comentario ?? ''}

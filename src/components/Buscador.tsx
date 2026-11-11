@@ -61,7 +61,9 @@ export default function Buscador({ onAgregado }: BuscadorProps) {
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
         />
-        <button type="submit" disabled={cargando}>Buscar</button>
+        <button type="submit" disabled={cargando}>
+          Buscar
+        </button>
       </form>
 
       {cargando && <p>Buscando...</p>}
@@ -77,18 +79,21 @@ export default function Buscador({ onAgregado }: BuscadorProps) {
           const yaAgregado = agregados.includes(clave)
           return (
             <li key={clave}>
-
               {r.posterUrl ? (
                 <img src={r.posterUrl} alt={r.titulo} width={120} />
               ) : (
                 <div>Sin póster</div>
               )}
               <strong>{r.titulo}</strong> ({r.anio || 's/f'}) - {r.tipo}
-                            <button
+              <button
                 onClick={() => agregar(r)}
                 disabled={agregando === clave || yaAgregado}
               >
-                {yaAgregado ? '✓ Agregado' : agregando === clave ? 'Agregando...' : 'Agregar a mi lista'}
+                {yaAgregado
+                  ? '✓ Agregado'
+                  : agregando === clave
+                    ? 'Agregando...'
+                    : 'Agregar a mi lista'}
               </button>
             </li>
           )

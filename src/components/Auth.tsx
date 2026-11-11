@@ -19,12 +19,16 @@ export default function Auth() {
     setMensaje(null)
 
     if (modo === 'login') {
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
       if (error) setError(error.message)
     } else {
       const { data, error } = await supabase.auth.signUp({ email, password })
       if (error) setError(error.message)
-      else if (!data.session) setMensaje('Revisa tu correo para confirmar tu cuenta.')
+      else if (!data.session)
+        setMensaje('Revisa tu correo para confirmar tu cuenta.')
     }
 
     setCargando(false)
@@ -52,7 +56,11 @@ export default function Auth() {
           required
         />
         <button type="submit" disabled={cargando}>
-          {cargando ? 'Cargando...' : modo === 'login' ? 'Entrar' : 'Registrarme'}
+          {cargando
+            ? 'Cargando...'
+            : modo === 'login'
+              ? 'Entrar'
+              : 'Registrarme'}
         </button>
       </form>
 
@@ -60,7 +68,9 @@ export default function Auth() {
       {mensaje && <p>{mensaje}</p>}
 
       <button onClick={() => setModo(modo === 'login' ? 'registro' : 'login')}>
-        {modo === 'login' ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
+        {modo === 'login'
+          ? '¿No tienes cuenta? Regístrate'
+          : '¿Ya tienes cuenta? Inicia sesión'}
       </button>
     </div>
   )
