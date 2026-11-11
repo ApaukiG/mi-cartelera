@@ -259,6 +259,12 @@ export function balance(
   pausa: number = PAUSA_MIN,
 ): Balance
 
+/** Minutos de pausa de una sesión con esa cantidad de películas: pausa × (n − 1); 0 si hay 0 o 1. */
+export function minutosDePausas(
+  cantidadPeliculas: number,
+  pausa: number = PAUSA_MIN,
+): number
+
 /** Minutos que añade una película: su duración, más la pausa si la sesión no está vacía. */
 export function minutosNecesarios(
   duracion: number,
@@ -279,16 +285,17 @@ export function validarSesionParaGuardar(
 ): ResultadoGuardable
 ```
 
-| Función                    | Devuelve                        | Implementa              |
-| -------------------------- | ------------------------------- | ----------------------- |
-| `validarTiempoDisponible`  | Minutos o el tipo de error      | RN-01, CB-07            |
-| `esTiempoValido`           | `boolean`                       | RN-01                   |
-| `duracionConocida`         | `boolean` (guarda de tipo)      | RN-05 (0 = desconocida) |
-| `tiempoTotal`              | Minutos                         | RN-03                   |
-| `cabe`                     | `boolean`                       | RN-03, RN-04            |
-| `balance`                  | Total, restante y exceso        | RN-04, RN-12, CB-21     |
-| `minutosNecesarios`        | Minutos                         | RN-03, SU-02, CB-09     |
-| `validarSesionParaGuardar` | `ok`, o el motivo (y el exceso) | RN-04, RN-12, SU-04     |
+| Función                    | Devuelve                                                            | Implementa              |
+| -------------------------- | ------------------------------------------------------------------- | ----------------------- |
+| `validarTiempoDisponible`  | Minutos o el tipo de error                                          | RN-01, CB-07            |
+| `esTiempoValido`           | `boolean`                                                           | RN-01                   |
+| `duracionConocida`         | `boolean` (guarda de tipo)                                          | RN-05 (0 = desconocida) |
+| `tiempoTotal`              | Minutos                                                             | RN-03                   |
+| `minutosDePausas`          | Minutos de pausa (para el resumen "incluye {pausas} min de pausas") | RN-03                   |
+| `cabe`                     | `boolean`                                                           | RN-03, RN-04            |
+| `balance`                  | Total, restante y exceso                                            | RN-04, RN-12, CB-21     |
+| `minutosNecesarios`        | Minutos                                                             | RN-03, SU-02, CB-09     |
+| `validarSesionParaGuardar` | `ok`, o el motivo (y el exceso)                                     | RN-04, RN-12, SU-04     |
 
 **Tests — `src/dominio/sesion.test.ts`**
 
@@ -308,6 +315,9 @@ export function validarSesionParaGuardar(
 |                            | tres películas llevan dos pausas (90, 100, 80 → 290)                        |
 |                            | quitar la del medio deja una pausa (90, 80 → 180)                           |
 |                            | usa la pausa recibida por parámetro                                         |
+|                            | la pausa por defecto es PAUSA_MIN                                           |
+| `minutosDePausas`          | 0 y 1 películas no llevan pausas                                            |
+|                            | 3 películas llevan 20 min de pausas                                         |
 | `cabe`                     | **una sesión que ocupa exactamente el tiempo disponible cabe (170 en 170)** |
 |                            | un minuto más que el tiempo disponible no cabe (171 en 170)                 |
 |                            | **una sola película igual al tiempo cabe, sin pausa (120 en 120)**          |
@@ -817,30 +827,30 @@ Notación de los tests: `archivo › describe › it`. "Navegador" significa pru
 
 ### 7.2 Criterios de la spec
 
-| Criterio | Verificación                                                                                                                              |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| S-01     | Revisión de código: los componentes de `noche/` no contienen `+` sobre duraciones ni `PAUSA_MIN`                                          |
-| S-02     | `grep -rn "supabase\|fetch(" src/components/noche` no devuelve nada                                                                       |
-| S-03     | `npm run lint` + `npm run build` + `grep -rn " as \|any" src/lib/sesiones.ts src/lib/tmdb.ts src/dominio` sin coincidencias nuevas        |
-| S-04     | `grep -rn "10" src/dominio src/components/noche` solo muestra `PAUSA_MIN = 10`                                                            |
-| S-05     | Revisión de `crearSesion` (solo `supabase.rpc`) + SQL: forzar un error en la segunda película y comprobar que no queda la sesión          |
-| S-06     | SQL: `update public.sesiones set nombre = 'x'` falla con permission denied                                                                |
-| S-07     | Navegador: el estado de los títulos en Mi lista no cambia al guardar ni al eliminar (CA-03.7, CA-05.3)                                    |
-| S-08     | Navegador: escribir una búsqueda en Mi lista, ir a Noche de película y volver; la búsqueda sigue ahí. Recorrido completo de la E1         |
-| S-09     | `git diff package.json` de la épica: solo `vitest` en `devDependencies`                                                                   |
-| S-10     | `git grep` de la clave real (sin mostrarla) no encuentra nada; `grep -rn "import.meta.env" src` solo en `src/lib/`                        |
-| S-11     | Navegador (CA-03.10)                                                                                                                      |
-| S-12     | Navegador (CA-03.11)                                                                                                                      |
-| S-13     | Vitest de dominio + SQL de CA-03.2, CA-03.5 y CA-03.9                                                                                     |
-| S-14     | DIS-01, DIS-02, DIS-03 y DIS-04                                                                                                           |
-| S-15     | Vitest `nombre.test.ts › … 60 caracteres con ñ y tildes es válido` + SQL con el mismo nombre                                              |
-| S-16     | Navegador → Network: con más de 5 películas, nunca hay más de 5 peticiones `movie/` abiertas a la vez                                     |
-| S-17     | Navegador → Network: cambiar el tiempo y agregar o quitar películas no genera peticiones                                                  |
-| S-18     | `git diff` de la épica sobre `src/lib/lista.ts` (sin cambios) y sobre `buscarTitulos`/`obtenerDetalle` (sin cambios) + recorrido de la E1 |
-| S-19     | Navegador: todos los tiempos terminan en "min"                                                                                            |
-| S-20     | Navegador: cerrar sesión desde Noche de película, volver a entrar → Mi lista                                                              |
-| S-21     | Vitest `candidatas.test.ts › clasificarCandidatas › con 20 restantes…`                                                                    |
-| S-22     | Salida de los tres comandos en `docs/VERIFICACION.md` (E2-T14)                                                                            |
+| Criterio | Verificación                                                                                                                                                                          |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S-01     | Revisión de código: los componentes de `noche/` no contienen `+` sobre duraciones; las pausas del resumen salen de `minutosDePausas`. `PAUSA_MIN` solo aparece en el texto del motivo |
+| S-02     | `grep -rn "supabase\|fetch(" src/components/noche` no devuelve nada                                                                                                                   |
+| S-03     | `npm run lint` + `npm run build` + `grep -rn " as \|any" src/lib/sesiones.ts src/lib/tmdb.ts src/dominio` sin coincidencias nuevas                                                    |
+| S-04     | `grep -rn "10" src/dominio src/components/noche` solo muestra `PAUSA_MIN = 10`                                                                                                        |
+| S-05     | Revisión de `crearSesion` (solo `supabase.rpc`) + SQL: forzar un error en la segunda película y comprobar que no queda la sesión                                                      |
+| S-06     | SQL: `update public.sesiones set nombre = 'x'` falla con permission denied                                                                                                            |
+| S-07     | Navegador: el estado de los títulos en Mi lista no cambia al guardar ni al eliminar (CA-03.7, CA-05.3)                                                                                |
+| S-08     | Navegador: escribir una búsqueda en Mi lista, ir a Noche de película y volver; la búsqueda sigue ahí. Recorrido completo de la E1                                                     |
+| S-09     | `git diff package.json` de la épica: solo `vitest` en `devDependencies`                                                                                                               |
+| S-10     | `git grep` de la clave real (sin mostrarla) no encuentra nada; `grep -rn "import.meta.env" src` solo en `src/lib/`                                                                    |
+| S-11     | Navegador (CA-03.10)                                                                                                                                                                  |
+| S-12     | Navegador (CA-03.11)                                                                                                                                                                  |
+| S-13     | Vitest de dominio + SQL de CA-03.2, CA-03.5 y CA-03.9                                                                                                                                 |
+| S-14     | DIS-01, DIS-02, DIS-03 y DIS-04                                                                                                                                                       |
+| S-15     | Vitest `nombre.test.ts › … 60 caracteres con ñ y tildes es válido` + SQL con el mismo nombre                                                                                          |
+| S-16     | Navegador → Network: con más de 5 películas, nunca hay más de 5 peticiones `movie/` abiertas a la vez                                                                                 |
+| S-17     | Navegador → Network: cambiar el tiempo y agregar o quitar películas no genera peticiones                                                                                              |
+| S-18     | `git diff` de la épica sobre `src/lib/lista.ts` (sin cambios) y sobre `buscarTitulos`/`obtenerDetalle` (sin cambios) + recorrido de la E1                                             |
+| S-19     | Navegador: todos los tiempos terminan en "min"                                                                                                                                        |
+| S-20     | Navegador: cerrar sesión desde Noche de película, volver a entrar → Mi lista                                                                                                          |
+| S-21     | Vitest `candidatas.test.ts › clasificarCandidatas › con 20 restantes…`                                                                                                                |
+| S-22     | Salida de los tres comandos en `docs/VERIFICACION.md` (E2-T14)                                                                                                                        |
 
 ### 7.3 Criterios de diseño aplicables a Noche de película
 

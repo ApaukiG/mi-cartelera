@@ -168,7 +168,7 @@ Comprobados el 11-nov revisando el código y con los comandos que pide la spec (
 | S-05     | `crearSesion` solo llama a `supabase.rpc('crear_sesion', …)`. La prueba SQL de forzar un fallo está sin hacer.                                                        | ✔ Código · 11-nov (SQL sin verificar)       |
 | S-06     | La migración tiene `revoke update` y ninguna política `for update`, y la interfaz no permite editar (CA-04.6 ✔). La prueba RN-09 desde la consola está sin verificar. | ✔ Código · 11-nov                           |
 | S-07     | Depende de CA-03.7 y CA-05.3. CA-05.3 ✔ 11-nov; CA-03.7 sin verificar.                                                                                                | Sin verificar (parcial)                     |
-| S-08     | `App.tsx` envuelve `Buscador` y `MiLista` en `div hidden`. La regresión de la E1 está sin hacer (ver la sección siguiente).                                           | Sin verificar                               |
+| S-08     | `App.tsx` envuelve `Buscador` y `MiLista` en `div hidden`. La regresión de la E1 (R-01 a R-08), probada en el navegador, funciona igual que antes.                    | ✔ Probado por Apauki · 11-nov               |
 | S-09     | Desde `7ffcbc3`, `git diff` de `package.json` solo muestra `vitest` en `devDependencies` y el script `test`.                                                          | ✔ Código · 11-nov                           |
 | S-10     | `import.meta.env` solo aparece en `src/lib/supabase.ts` y `src/lib/tmdb.ts`, y `.env.local` está en `.gitignore`.                                                     | ✔ Código · 11-nov                           |
 | S-11     | `GuardarSesion` deshabilita el botón mientras `guardando`. La prueba en el navegador (CA-03.10) está sin verificar.                                                   | ✔ Código · 11-nov (navegador sin verificar) |
@@ -212,18 +212,18 @@ Criterios de `DESIGN.md` §7 aplicados a la vista, tal como indica la spec (§7.
 
 ## Regresión de la E1 — E2-T14
 
-Recorrido completo de la E1 con la E2 ya integrada (S-08 y S-18). Ninguna fila se ha probado todavía.
+Recorrido completo de la E1 con la E2 ya integrada (S-08 y S-18). Probada en el navegador el 11-nov: todo funciona igual que antes de la E2.
 
-| Paso | Qué hacer                                                          | Resultado esperado                                                 | Resultado obtenido |
-| ---- | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------ |
-| R-01 | Registrarse, cerrar sesión y entrar.                               | Sin sesión solo se ve el acceso, y al entrar se ve Mi lista.       | Sin verificar      |
-| R-02 | Buscar un título en TMDB.                                          | Muestra "Buscando..." y luego los resultados, o el error si falla. | Sin verificar      |
-| R-03 | Agregar un título y luego intentar agregarlo otra vez.             | Aparece en Mi lista; el duplicado muestra un mensaje claro.        | Sin verificar      |
-| R-04 | Cambiar el estado, la calificación y el comentario.                | Se guardan y se mantienen al recargar.                             | Sin verificar      |
-| R-05 | Filtrar por estado y ordenar por calificación; ver el contador.    | Funcionan igual que antes de la E2.                                | Sin verificar      |
-| R-06 | Abrir el detalle y volver.                                         | Póster, sinopsis, elenco y calificación de TMDB.                   | Sin verificar      |
-| R-07 | Eliminar un título.                                                | Desaparece de Mi lista.                                            | Sin verificar      |
-| R-08 | Escribir una búsqueda, ir a Noche de película y volver a Mi lista. | La búsqueda sigue ahí (S-08).                                      | Sin verificar      |
+| Paso | Qué hacer                                                          | Resultado esperado                                                 | Resultado obtenido            |
+| ---- | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ----------------------------- |
+| R-01 | Registrarse, cerrar sesión y entrar.                               | Sin sesión solo se ve el acceso, y al entrar se ve Mi lista.       | ✔ Probado por Apauki · 11-nov |
+| R-02 | Buscar un título en TMDB.                                          | Muestra "Buscando..." y luego los resultados, o el error si falla. | ✔ Probado por Apauki · 11-nov |
+| R-03 | Agregar un título y luego intentar agregarlo otra vez.             | Aparece en Mi lista; el duplicado muestra un mensaje claro.        | ✔ Probado por Apauki · 11-nov |
+| R-04 | Cambiar el estado, la calificación y el comentario.                | Se guardan y se mantienen al recargar.                             | ✔ Probado por Apauki · 11-nov |
+| R-05 | Filtrar por estado y ordenar por calificación; ver el contador.    | Funcionan igual que antes de la E2.                                | ✔ Probado por Apauki · 11-nov |
+| R-06 | Abrir el detalle y volver.                                         | Póster, sinopsis, elenco y calificación de TMDB.                   | ✔ Probado por Apauki · 11-nov |
+| R-07 | Eliminar un título.                                                | Desaparece de Mi lista.                                            | ✔ Probado por Apauki · 11-nov |
+| R-08 | Escribir una búsqueda, ir a Noche de película y volver a Mi lista. | La búsqueda sigue ahí (S-08).                                      | ✔ Probado por Apauki · 11-nov |
 
 ---
 
@@ -256,10 +256,11 @@ dist/assets/index-DpSEYug0.js   458.97 kB │ gzip: 130.37 kB
 | Criterios        | ✔ Navegador o código | Cubierto por test | Sin verificar | ✘   |
 | ---------------- | -------------------- | ----------------- | ------------- | --- |
 | CA (54)          | 20                   | 22                | 12            | 0   |
-| S-xx (22)        | 14                   | 3                 | 5             | 0   |
+| S-xx (22)        | 15                   | 3                 | 4             | 0   |
 | DIS-xx (15)      | 8                    | 0                 | 7             | 0   |
-| Regresión E1 (8) | 0                    | 0                 | 8             | 0   |
+| Regresión E1 (8) | 8                    | 0                 | 0             | 0   |
 
 - No hay ningún ✘, así que no hace falta abrir tickets de corrección.
-- La épica se cierra **con pendientes**, por lo que la Definition of Done de E2-T14 no se cumple del todo: la regresión de la E1 está sin hacer, faltan las pruebas RLS desde la consola (CA-06.2) y hay CA y DIS sin verificar en el navegador. El detalle y la razón de cada uno están en `docs/AUDITORIA.md`.
+- La regresión de la E1 está completa: ✔ 11-nov.
+- La épica se cierra **con pendientes**, por lo que la Definition of Done de E2-T14 no se cumple del todo: faltan las pruebas RLS desde la consola (CA-06.2) y hay CA y DIS sin verificar en el navegador. El detalle y la razón de cada uno están en `docs/AUDITORIA.md`.
 - `npm test`, `npm run lint` y `npm run build` pasan.

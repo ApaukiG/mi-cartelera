@@ -22,13 +22,14 @@ Commits de la épica: E2-T03 `6be1430`, E2-T04 `3d19729`, E2-T05 `3d5d798`, E2-T
 
 ## Resumen
 
-| Grupo       | cumple | no cumple | sin verificar |
-| ----------- | ------ | --------- | ------------- |
-| CA (54)     | 42     | 0         | 12            |
-| S-xx (22)   | 17     | 0         | 5             |
-| DIS-xx (15) | 8      | 0         | 7             |
+| Grupo            | cumple | no cumple | sin verificar |
+| ---------------- | ------ | --------- | ------------- |
+| CA (54)          | 42     | 0         | 12            |
+| S-xx (22)        | 18     | 0         | 4             |
+| DIS-xx (15)      | 8      | 0         | 7             |
+| Regresión E1 (8) | 8      | 0         | 0             |
 
-No hay ningún criterio que **no cumpla**. Los que están **sin verificar** dependen de pruebas manuales que faltan; se recogen en los hallazgos H-02 a H-05.
+No hay ningún criterio que **no cumpla**. Los que están **sin verificar** dependen de pruebas manuales que faltan; se recogen en los hallazgos H-03 a H-05.
 
 ---
 
@@ -120,6 +121,21 @@ No hay ningún criterio que **no cumpla**. Los que están **sin verificar** depe
 
 ---
 
+## Regresión de la E1
+
+| Paso | Estado | Evidencia             |
+| ---- | ------ | --------------------- |
+| R-01 | cumple | VERIFICACION ✔ 11-nov |
+| R-02 | cumple | VERIFICACION ✔ 11-nov |
+| R-03 | cumple | VERIFICACION ✔ 11-nov |
+| R-04 | cumple | VERIFICACION ✔ 11-nov |
+| R-05 | cumple | VERIFICACION ✔ 11-nov |
+| R-06 | cumple | VERIFICACION ✔ 11-nov |
+| R-07 | cumple | VERIFICACION ✔ 11-nov |
+| R-08 | cumple | VERIFICACION ✔ 11-nov |
+
+---
+
 ## Criterios de la spec (S-xx)
 
 | Criterio | Estado        | Evidencia                                                                                                              |
@@ -131,7 +147,7 @@ No hay ningún criterio que **no cumpla**. Los que están **sin verificar** depe
 | S-05     | cumple        | Código: `crearSesion` solo usa `supabase.rpc('crear_sesion')`. La prueba SQL del rollback está pendiente (H-03)        |
 | S-06     | cumple        | Migración: `revoke update` y ninguna política `for update`; la interfaz no permite editar (CA-04.6)                    |
 | S-07     | sin verificar | CA-05.3 ✔; falta CA-03.7 (H-04)                                                                                        |
-| S-08     | sin verificar | Código: `div hidden` en `App.tsx`. Falta la regresión de la E1 (H-02)                                                  |
+| S-08     | cumple        | Código: `div hidden` en `App.tsx` · VERIFICACION: regresión de la E1 ✔ 11-nov (R-08: la búsqueda se conserva)          |
 | S-09     | cumple        | Código: `git diff 7ffcbc3 HEAD -- package.json` solo agrega `vitest` (devDependency)                                   |
 | S-10     | cumple        | Código: `import.meta.env` solo en `src/lib/`; `.env.local` está en `.gitignore`                                        |
 | S-11     | cumple        | Código: `disabled={guardando}` en `GuardarSesion`                                                                      |
@@ -176,12 +192,12 @@ No hay ningún criterio que **no cumpla**. Los que están **sin verificar** depe
 | Id   | Hallazgo                                                                                                                                                                                   | Resolución                                                                                                                                                                                                                                                                                                         |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | H-01 | La spec no recogía dos decisiones de la implementación: la prop `onInvalido` de `FormularioTiempo` y la clase `.rejilla` en las sesiones guardadas.                                        | **Corregido** en `9516956` (`docs(spec): alinea la spec con la implementación`).                                                                                                                                                                                                                                   |
-| H-02 | La regresión de la E1 (R-01 a R-08 en `VERIFICACION.md`) no se ha hecho. Por eso no se cumple del todo la Definition of Done de E2-T14.                                                    | **Pendiente.** Hay que recorrer la app a mano con una cuenta real. Las filas están listas en `VERIFICACION.md`.                                                                                                                                                                                                    |
+| H-02 | La regresión de la E1 (R-01 a R-08 en `VERIFICACION.md`) estaba sin hacer.                                                                                                                 | **Corregido.** Se probó en el navegador el 11-nov y todo funciona igual (VERIFICACION ✔ 11-nov).                                                                                                                                                                                                                   |
 | H-03 | Faltan las pruebas RLS desde la consola (CA-06.2, la parte de consola de CA-06.1, RN-09 y "Sin sesión") y las pruebas SQL de S-05 y S-13.                                                  | **Pendiente.** Hacen falta dos cuentas y la sesión del navegador de cada una. Según `AGENTS.md`, el agente no puede leer ni usar las claves de `.env.local`, así que las debe hacer la persona. El procedimiento está en `VERIFICACION.md` (HU-06). Mientras tanto, la política RLS está revisada en la migración. |
 | H-04 | Hay 11 CA que solo se pueden comprobar en el navegador y que no se probaron: CA-03.6, 03.7, 03.8, 03.10, 03.11, 03.12, 04.3, 04.4, 04.5, 05.4 y 06.3. De ellos dependen S-07, S-12 y S-20. | **Pendiente.** Son los pasos 7 a 9, 13 y 14 de la checklist manual. No hay indicios de fallo: el código sigue la spec en todos.                                                                                                                                                                                    |
 | H-05 | Hay criterios visuales sin medir: DIS-05, 09, 10, 11, 13 (en parte), 14 y 15, además de S-17 (Network).                                                                                    | **Pendiente.** Requieren DevTools en el navegador. Las clases y los tokens son los mismos que en la E1.                                                                                                                                                                                                            |
 | H-06 | La E1 tiene estilos en línea (`style={{ color: 'red' }}` en `Auth`, `Buscador`, `Detalle` y `MiLista`). No cumple DIS-01 ni DIS-02 en toda la app.                                         | **Pendiente**, fuera de la épica: es la deuda D-04, y la regla 3 de `AGENTS.md` prohíbe reescribir la E1 sin un ticket.                                                                                                                                                                                            |
 | H-07 | S-22 pide que lint, build y test pasen en cada commit de la épica. Solo se comprobó en el último.                                                                                          | **Pendiente (aceptado).** No quedó registrada la salida de cada commit. Para comprobarlo, se puede ejecutar `git rebase --exec "npm run lint && npm run build && npm test"` desde `dab96e1` en una rama aparte. No cambia el estado final.                                                                         |
-| H-08 | No hay capturas de la E2: `docs/evidencia/` está vacía y el README solo muestra la E1.                                                                                                     | **Pendiente.** Se agregarán cuando se termine la verificación manual (H-02 a H-05).                                                                                                                                                                                                                                |
-| H-09 | La función de dominio `minutosDePausas` (`src/dominio/sesion.ts`, con test) no aparece en la spec §3.1.                                                                                    | **Pendiente.** No cambia el comportamiento. Basta con agregarla a la spec en un commit `docs(spec)`.                                                                                                                                                                                                               |
+| H-08 | No hay capturas de la E2: `docs/evidencia/` está vacía y el README solo muestra la E1.                                                                                                     | **Pendiente.** Se agregarán cuando se termine la verificación manual (H-03 a H-05).                                                                                                                                                                                                                                |
+| H-09 | La función de dominio `minutosDePausas` (`src/dominio/sesion.ts`, con test) no aparecía en la spec §3.1.                                                                                   | **Corregido** en el commit `docs: registra regresión de la E1 y alinea la spec`: está en la firma, en la tabla de funciones y en los tests de §3.1.                                                                                                                                                                |
 | H-10 | El README decía `.env` en lugar de `.env.local`, tenía un enlace de ejemplo y el encabezado de capturas duplicado (deuda D-16).                                                            | **Corregido** en el commit `docs(readme): épica E2, tests y harness`.                                                                                                                                                                                                                                              |
