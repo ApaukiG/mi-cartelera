@@ -14,6 +14,7 @@ import type { TituloGuardado } from '../../types'
 import { obtenerDuraciones } from '../../lib/tmdb'
 import FormularioTiempo from './FormularioTiempo'
 import ListaCandidatas from './ListaCandidatas'
+import SesionEnArmado from './SesionEnArmado'
 
 // Vista Noche de película (épica E2).
 // Spec: docs/specs/noche-de-pelicula.md §5
@@ -70,6 +71,10 @@ export default function NocheDePelicula() {
     setSesion((actual) => [...actual, aPeliculaEnSesion(p)])
   }
 
+  function quitar(tmdbId: number) {
+    setSesion((actual) => actual.filter((p) => p.tmdbId !== tmdbId))
+  }
+
   const clasificacion =
     tiempo !== null ? clasificarCandidatas(candidatas, sesion, tiempo) : null
 
@@ -111,6 +116,13 @@ export default function NocheDePelicula() {
                 tiempo={tiempo}
                 sesionVacia={sesion.length === 0}
                 onAgregar={agregar}
+              />
+
+              <h3>Tu sesión</h3>
+              <SesionEnArmado
+                peliculas={sesion}
+                tiempo={tiempo}
+                onQuitar={quitar}
               />
             </>
           )}

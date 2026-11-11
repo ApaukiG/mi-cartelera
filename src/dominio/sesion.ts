@@ -41,9 +41,16 @@ export function tiempoTotal(
   duraciones: readonly number[],
   pausa: number = PAUSA_MIN,
 ): number {
-  if (duraciones.length === 0) return 0
   const suma = duraciones.reduce((acumulado, d) => acumulado + d, 0)
-  return suma + pausa * (duraciones.length - 1)
+  return suma + minutosDePausas(duraciones.length, pausa)
+}
+
+/** Minutos de pausa de una sesión con esa cantidad de películas: pausa × (n − 1); 0 si hay 0 o 1. RN-03. */
+export function minutosDePausas(
+  cantidadPeliculas: number,
+  pausa: number = PAUSA_MIN,
+): number {
+  return cantidadPeliculas > 1 ? pausa * (cantidadPeliculas - 1) : 0
 }
 
 /**

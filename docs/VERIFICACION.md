@@ -29,3 +29,23 @@ Registro de la verificación de cada criterio de aceptación de `docs/backlog/hi
 | CA-01.14 | Escribir 30 con películas más largas.                                                                              | "Ninguna de tus películas cabe en 30 minutos. Prueba con más tiempo."                                                                                                                        |                    |
 | CA-01.15 | Escribir 120 con una película de 140 min.                                                                          | Aparece después de las que caben, con la insignia "No cabe" y el motivo "Dura 140 min y tienes 120.". Las que no tienen duración van al final.                                               |                    |
 | CA-01.16 | (Difícil de provocar a mano: requiere que TMDB falle solo para algunas.)                                           | Esas películas muestran "No se pudo obtener la duración. Vuelve a intentarlo más tarde." Test: `tmdb.test.ts › si fallan algunas, marca error solo en esas`.                                 |                    |
+
+---
+
+## HU-02 — Armar una sesión (E2-T11)
+
+Para los criterios con números concretos conviene tener películas de esas duraciones; si no, comprobar la misma cuenta con las duraciones reales (total = suma + 10 × (películas − 1)).
+
+| Criterio | Qué hacer                                                                   | Resultado esperado                                                                                                                     | Resultado obtenido |
+| -------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| CA-02.1  | Tiempo 120; agregar una película de 100 min.                                | "Total: 100 min (incluye 0 min de pausas) · Te quedan 20 min".                                                                         |                    |
+| CA-02.2  | Tiempo 180; agregar una de 100 y luego una de 60.                           | "Total: 170 min (incluye 10 min de pausas) · Te quedan 10 min".                                                                        |                    |
+| CA-02.3  | Tiempo 170; agregar 100 y 60.                                               | "Total: 170 min … · Te quedan 0 min". Sin aviso de exceso.                                                                             |                    |
+| CA-02.4  | Con 20 min restantes y una película en la sesión.                           | Una película de 10 min se puede agregar; una de 15 min, no. Test: `candidatas.test.ts › con 20 restantes cabe la de 10 y no la de 15`. |                    |
+| CA-02.5  | Ver la tarjeta de la película que no cabe del caso anterior.                | "Necesita 25 min (15 + 10 de pausa) y te quedan 20.", con el botón deshabilitado.                                                      |                    |
+| CA-02.6  | Agregar una película.                                                       | Desaparece de "Qué cabe" y aparece en "Tu sesión".                                                                                     |                    |
+| CA-02.7  | Con una sola película en la sesión, pulsar "Quitar".                        | "Tu sesión está vacía. Agrega películas de las que caben." y la película vuelve a "Qué cabe".                                          |                    |
+| CA-02.8  | Agregar 3 películas y quitar la del medio.                                  | El total baja en la duración quitada más 10 min de pausa. Test: `sesion.test.ts › quitar la del medio deja una pausa`.                 |                    |
+| CA-02.9  | Con una sesión de 170 min, cambiar el tiempo a 150 y pulsar "Ver qué cabe". | "Tu sesión se pasa por 20 min. Quita películas para poder guardarla." La sesión no se vacía.                                           |                    |
+| CA-02.10 | Con una sesión de 170 min, cambiar el tiempo a 200.                         | "Te quedan 30 min" y "Qué cabe" se actualiza.                                                                                          |                    |
+| CA-02.11 | Intentar agregar una película "Sin duración".                               | El botón está deshabilitado; el motivo lo explica.                                                                                     |                    |

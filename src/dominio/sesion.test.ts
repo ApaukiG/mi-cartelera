@@ -4,6 +4,7 @@ import {
   balance,
   cabe,
   duracionConocida,
+  minutosDePausas,
   minutosNecesarios,
   tiempoTotal,
   validarSesionParaGuardar,
@@ -94,6 +95,17 @@ describe('tiempoTotal', () => {
 
   it('la pausa por defecto es PAUSA_MIN', () => {
     expect(PAUSA_MIN).toBe(10)
+  })
+})
+
+describe('minutosDePausas', () => {
+  it('0 y 1 películas no llevan pausas', () => {
+    expect(minutosDePausas(0)).toBe(0)
+    expect(minutosDePausas(1)).toBe(0)
+  })
+
+  it('3 películas llevan 20 min de pausas', () => {
+    expect(minutosDePausas(3)).toBe(20)
   })
 })
 
