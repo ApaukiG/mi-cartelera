@@ -169,6 +169,7 @@ Fuentes: `docs/prd/PRD.md`, `docs/backlog/historias.md`, `docs/backlog/refinamie
 - **Descripción:** en Noche de película, un campo para el tiempo disponible y la lista de películas que caben y de las no disponibles con su motivo, usando el dominio (E2-T03, E2-T04) y el servicio de duración (E2-T06). Incluye los estados de carga, error con reintento y vacío. Las películas se muestran en `.rejilla` / `.tarjeta`.
 - **Cubre:** HU-01 · CA-01.1 a CA-01.16, CA-06.4.
 - **Definition of Done:**
+  - Se crea `docs/VERIFICACION.md` con su primera sección (HU-01), donde E2-T11 a E2-T13 agregan las suyas.
   - Cada CA de HU-01 se comprueba manualmente en el navegador y se marca en `docs/VERIFICACION.md`.
   - El componente no importa `supabase` ni llama a `fetch`.
   - Sin estilos en línea (DIS-01), y los mensajes usan las clases `.mensaje*` (DIS-12, DIS-13).
@@ -211,10 +212,10 @@ Fuentes: `docs/prd/PRD.md`, `docs/backlog/historias.md`, `docs/backlog/refinamie
   - Todos los intentos cruzados devuelven 0 filas o un error de permisos.
 - **Dependencias:** E2-T05, E2-T12.
 
-### E2-T14 — `docs/VERIFICACION.md`
+### E2-T14 — Completar y cerrar `docs/VERIFICACION.md`
 
 - **Tipo:** docs
-- **Descripción:** checklist final de la épica:
+- **Descripción:** completar y cerrar `docs/VERIFICACION.md`, creado en E2-T10 y ampliado en E2-T11 a E2-T13, como checklist final de la épica:
   - cada CA de `historias.md` con su resultado (✔ o ✘) y la fecha;
   - los criterios DIS-01 a DIS-15 de `DESIGN.md` aplicados a Noche de película;
   - la regresión de la E1 (recorrido completo);
