@@ -29,8 +29,8 @@ export default function Detalle({ titulo, onVolver }: DetalleProps) {
       <button onClick={onVolver}>← Volver a mi lista</button>
       <h2>{titulo.titulo}</h2>
 
-      {cargando && <p>Cargando detalle...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {cargando && <p className="mensaje">Cargando detalle...</p>}
+      {error && <p className="mensaje mensaje-error">{error}</p>}
 
       {detalle && (
         <div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { obtenerLista, actualizarTitulo, eliminarTitulo } from '../lib/lista'
 import type { Estado, TituloGuardado } from '../types'
+import { etiquetaTipo } from '../dominio/tipo'
 import Detalle from './Detalle'
 
 interface MiListaProps {
@@ -136,51 +137,58 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
       </select>
 
       {!cargando && !error && titulos.length > 0 && visibles.length === 0 && (
-        <p>No tienes títulos con ese estado.</p>
+        <p className="mensaje mensaje-vacio">
+          No tienes títulos con ese estado.
+        </p>
       )}
 
-      {cargando && <p>Cargando tu lista...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {cargando && <p className="mensaje">Cargando tu lista...</p>}
+      {error && <p className="mensaje mensaje-error">{error}</p>}
       {!cargando && !error && titulos.length === 0 && (
-        <p>Tu lista está vacía. Busca algo y agrégalo.</p>
+        <p className="mensaje mensaje-vacio">
+          Tu lista está vacía. Busca algo y agrégalo.
+        </p>
       )}
 
-      <ul>
+      <ul className="rejilla">
         {visibles.map((t) => (
-          <li key={t.id}>
+          <li key={t.id} className="tarjeta">
+            <span className="insignia">{etiquetaTipo(t.tipo_contenido)}</span>
             {t.poster_url ? (
-              <img src={t.poster_url} alt={t.titulo} width={120} />
+              <img src={t.poster_url} alt={t.titulo} />
             ) : (
-              <div>Sin póster</div>
+              <div className="sin-poster">Sin póster</div>
             )}
-            <strong>{t.titulo}</strong> - {t.tipo_contenido}
-            <button onClick={() => setSeleccionado(t)}>Ver detalle</button>
-            <select
-              value={t.estado}
-              onChange={(e) => cambiarEstado(t.id, e.target.value as Estado)}
-            >
-              <option value="por_ver">Por ver</option>
-              <option value="viendo">Viendo</option>
-              <option value="vista">Vista</option>
-            </select>
-            <select
-              value={t.calificacion_personal ?? ''}
-              onChange={(e) => cambiarCalificacion(t.id, e.target.value)}
-            >
-              <option value="">Sin calificar</option>
-              {[1, 2, 3, 4, 5].map((n) => (
-                <option key={n} value={n}>
-                  {n} ★
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              placeholder="Tu comentario..."
-              defaultValue={t.comentario ?? ''}
-              onBlur={(e) => cambiarComentario(t.id, e.target.value)}
-            />
-            <button onClick={() => eliminar(t.id)}>Eliminar</button>
+            <div className="tarjeta-cuerpo">
+              <span className="tarjeta-titulo">{t.titulo}</span>
+              <button onClick={() => setSeleccionado(t)}>Ver detalle</button>
+              <select
+                value={t.estado}
+                onChange={(e) => cambiarEstado(t.id, e.target.value as Estado)}
+              >
+                <option value="por_ver">Por ver</option>
+                <option value="viendo">Viendo</option>
+                <option value="vista">Vista</option>
+              </select>
+              <select
+                value={t.calificacion_personal ?? ''}
+                onChange={(e) => cambiarCalificacion(t.id, e.target.value)}
+              >
+                <option value="">Sin calificar</option>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <option key={n} value={n}>
+                    {n} ★
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                placeholder="Tu comentario..."
+                defaultValue={t.comentario ?? ''}
+                onBlur={(e) => cambiarComentario(t.id, e.target.value)}
+              />
+              <button onClick={() => eliminar(t.id)}>Eliminar</button>
+            </div>
           </li>
         ))}
       </ul>

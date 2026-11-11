@@ -124,6 +124,34 @@ header span {
   font-size: 0.9rem;
 }
 
+/* Correo + "Cerrar sesión" siempre juntos (DESIGN.md §4, E2-T15) */
+.cabecera-usuario {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.cabecera-usuario span {
+  overflow-wrap: anywhere;
+}
+
+/* Navegación entre vistas, en su propia fila; la activa se marca (E2-T15) */
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-basis: 100%;
+}
+
+nav button[aria-current='page'] {
+  border-color: var(--acento);
+  color: var(--acento);
+  font-weight: 600;
+}
+
 form {
   display: flex;
   flex-wrap: wrap;
@@ -193,7 +221,7 @@ img {
   border-radius: 6px;
 }
 
-/* Clases que usaremos en el siguiente paso */
+/* Cuadrícula y tarjetas de póster (DESIGN.md §4) */
 .rejilla {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -258,6 +286,8 @@ img {
   width: 100%;
   font-size: 0.85rem;
   padding: 6px 8px;
+  /* Altura natural: sin el flex-basis de 200px de los inputs de texto (E2-T15) */
+  flex: none;
 }
 
 .insignia {

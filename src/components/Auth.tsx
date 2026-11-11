@@ -64,7 +64,7 @@ export default function Auth() {
         </button>
       </form>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="mensaje mensaje-error">{error}</p>}
       {mensaje && <p>{mensaje}</p>}
 
       <button onClick={() => setModo(modo === 'login' ? 'registro' : 'login')}>

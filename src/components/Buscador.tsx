@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { buscarTitulos } from '../lib/tmdb'
 import { agregarALista } from '../lib/lista'
+import { etiquetaTipo } from '../dominio/tipo'
 import type { ResultadoTMDB } from '../types'
 
 interface BuscadorProps {
@@ -66,35 +67,39 @@ export default function Buscador({ onAgregado }: BuscadorProps) {
         </button>
       </form>
 
-      {cargando && <p>Buscando...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {mensaje && <p style={{ color: 'lightgreen' }}>{mensaje}</p>}
+      {cargando && <p className="mensaje">Buscando...</p>}
+      {error && <p className="mensaje mensaje-error">{error}</p>}
+      {mensaje && <p className="mensaje mensaje-exito">{mensaje}</p>}
       {buscado && !cargando && !error && resultados.length === 0 && (
-        <p>No se encontraron resultados.</p>
+        <p className="mensaje mensaje-vacio">No se encontraron resultados.</p>
       )}
 
-      <ul>
+      <ul className="rejilla">
         {resultados.map((r) => {
           const clave = `${r.tipo}-${r.id}`
           const yaAgregado = agregados.includes(clave)
           return (
-            <li key={clave}>
+            <li key={clave} className="tarjeta">
+              <span className="insignia">{etiquetaTipo(r.tipo)}</span>
               {r.posterUrl ? (
-                <img src={r.posterUrl} alt={r.titulo} width={120} />
+                <img src={r.posterUrl} alt={r.titulo} />
               ) : (
-                <div>Sin póster</div>
+                <div className="sin-poster">Sin póster</div>
               )}
-              <strong>{r.titulo}</strong> ({r.anio || 's/f'}) - {r.tipo}
-              <button
-                onClick={() => agregar(r)}
-                disabled={agregando === clave || yaAgregado}
-              >
-                {yaAgregado
-                  ? '✓ Agregado'
-                  : agregando === clave
-                    ? 'Agregando...'
-                    : 'Agregar a mi lista'}
-              </button>
+              <div className="tarjeta-cuerpo">
+                <span className="tarjeta-titulo">{r.titulo}</span>
+                <span className="tarjeta-meta">{r.anio || 's/f'}</span>
+                <button
+                  onClick={() => agregar(r)}
+                  disabled={agregando === clave || yaAgregado}
+                >
+                  {yaAgregado
+                    ? '✓ Agregado'
+                    : agregando === clave
+                      ? 'Agregando...'
+                      : 'Agregar a mi lista'}
+                </button>
+              </div>
             </li>
           )
         })}

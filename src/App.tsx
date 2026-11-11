@@ -38,6 +38,10 @@ function App() {
     <div>
       <header>
         <h1>Mi Cartelera Personal</h1>
+        <div className="cabecera-usuario">
+          <span>{session.user.email}</span>
+          <button onClick={() => supabase.auth.signOut()}>Cerrar sesión</button>
+        </div>
         <nav aria-label="Secciones">
           <button
             type="button"
@@ -45,7 +49,7 @@ function App() {
             onClick={() => setVista('mi-lista')}
           >
             Mi lista
-          </button>{' '}
+          </button>
           <button
             type="button"
             aria-current={vista === 'noche' ? 'page' : undefined}
@@ -54,8 +58,6 @@ function App() {
             Noche de película
           </button>
         </nav>
-        <span>{session.user.email}</span>
-        <button onClick={() => supabase.auth.signOut()}>Cerrar sesión</button>
       </header>
       <main>
         {/* Mi lista sigue montada al cambiar de vista para conservar su estado (S-08). */}
