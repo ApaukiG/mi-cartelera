@@ -227,6 +227,23 @@ Fuentes: `docs/prd/PRD.md`, `docs/backlog/historias.md`, `docs/backlog/refinamie
   - Los tres comandos pasan en el último commit de la épica.
 - **Dependencias:** E2-T12, E2-T13.
 
+### E2-T15 — Mejora visual de la E1
+
+- **Tipo:** style
+- **Descripción:** aplicar a las pantallas de la E1 el sistema de `DESIGN.md` sin cambiar su comportamiento. Resuelve las deudas D-01 y D-04 de `docs/ESTADO-INICIAL.md`:
+  - los resultados del buscador y Mi lista se muestran como cuadrícula de pósters: `.rejilla` > `.tarjeta`, con `.insignia`, `.sin-poster` y `.tarjeta-cuerpo` (D-01);
+  - los colores en línea (`red`, `lightgreen`) se sustituyen por `.mensaje-error` y `.mensaje-exito` en `Auth`, `Buscador`, `MiLista` y `Detalle` (D-04). Los textos de carga y de estado vacío de esas pantallas usan `.mensaje` y `.mensaje-vacio`;
+  - la cabecera se reordena para que "Cerrar sesión" no quede sola en otra línea: el correo y el botón van juntos (`.cabecera-usuario`) y la navegación pasa a su propia fila;
+  - la vista activa de la navegación se marca visualmente (`nav button[aria-current='page']`).
+- **Cubre:** ninguna historia (deuda técnica de la E1, D-01 y D-04). Spec: `docs/specs/noche-de-pelicula.md` §9.
+- **Definition of Done:**
+  - Se cumplen DIS-01, DIS-02, DIS-08, DIS-09, DIS-10, DIS-11 y DIS-14 en toda la app, comprobados en el navegador.
+  - La E1 se comporta igual: el recorrido R-01 a R-08 de `docs/VERIFICACION.md` da el mismo resultado y ningún texto cambia.
+  - No cambia ningún archivo de `src/lib/`, `src/dominio/` ni `src/components/noche/`.
+  - Las clases y los selectores nuevos están en `DESIGN.md` y en `docs/diseno/brand-board.html` antes de usarse.
+  - `npm test`, `npm run lint` y `npm run build` pasan.
+- **Dependencias:** E2-T14.
+
 ---
 
 ## Dependencias en orden de ejecución
@@ -248,3 +265,4 @@ Fuentes: `docs/prd/PRD.md`, `docs/backlog/historias.md`, `docs/backlog/refinamie
 | 13    | E2-T12 | feat  | E2-T07, E2-T11         | —                              |
 | 14    | E2-T13 | test  | E2-T05, E2-T12         | —                              |
 | 15    | E2-T14 | docs  | E2-T12, E2-T13         | —                              |
+| 16    | E2-T15 | style | E2-T14                 | —                              |

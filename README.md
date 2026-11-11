@@ -104,7 +104,7 @@ Conviene leer los documentos en este orden, que es también el orden en que se e
 3. `docs/prd/PRD.md`: el producto, con las épicas E1 y E2, las reglas RN-01 a RN-15 y los supuestos SU-01 a SU-07.
 4. `docs/backlog/historias.md`: historias HU-01 a HU-06 con sus criterios de aceptación.
 5. `docs/backlog/refinamiento.md`: casos borde CB-01 a CB-21.
-6. `docs/backlog/tickets.md`: tickets E2-T00 a E2-T14 y su orden.
+6. `docs/backlog/tickets.md`: tickets E2-T00 a E2-T15 y su orden.
 7. `docs/specs/noche-de-pelicula.md`: spec técnica de la E2, con el modelo de datos, el dominio, los servicios, la interfaz, los criterios S-01 a S-22 y cómo se verifica cada criterio.
 8. `docs/VERIFICACION.md`: resultado de la verificación de cada criterio y salida de `npm test`, `lint` y `build`.
 9. `docs/AUDITORIA.md`: estado y evidencia de cada criterio, y los hallazgos pendientes.

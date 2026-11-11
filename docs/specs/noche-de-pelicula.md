@@ -11,7 +11,7 @@ Noche de película permite al usuario indicar cuántos minutos tiene, ver qué p
 | `docs/prd/PRD.md`              | Reglas RN-01 a RN-15 y supuestos SU-01 a SU-07                 |
 | `docs/backlog/historias.md`    | Historias HU-01 a HU-06 y criterios CA-01.1 a CA-06.4          |
 | `docs/backlog/refinamiento.md` | Casos borde CB-01 a CB-21 (aceptados y rechazados)             |
-| `docs/backlog/tickets.md`      | Tickets E2-T00 a E2-T14 y su orden                             |
+| `docs/backlog/tickets.md`      | Tickets E2-T00 a E2-T15 y su orden                             |
 | `DESIGN.md`                    | Tokens, clases y criterios DIS-01 a DIS-15                     |
 | `docs/ESTADO-INICIAL.md`       | Código de la E1 que no se debe romper; deudas D-xx             |
 | `AGENTS.md`                    | Reglas de trabajo (dominio puro, servicios, sin `any`, claves) |
@@ -876,22 +876,63 @@ Notación de los tests: `archivo › describe › it`. "Navegador" significa pru
 
 ## 8. Ticket → archivos
 
-| Ticket | Crea                                                                                                                            | Modifica                                                                                                       |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| E2-T02 | `docs/specs/noche-de-pelicula.md`                                                                                               | —                                                                                                              |
-| E2-T00 | —                                                                                                                               | Todos los archivos de `src/` que Prettier reformatee (`*.ts`, `*.tsx`, `*.css`); sin cambios de comportamiento |
-| E2-T01 | `src/dominio/humo.test.ts` (test de humo; se borra en E2-T03)                                                                   | `package.json`, `package-lock.json`, `vite.config.ts` (bloque `test` de Vitest), `AGENTS.md`                   |
-| E2-T03 | `src/dominio/sesion.ts`, `src/dominio/sesion.test.ts`                                                                           | Borra `src/dominio/humo.test.ts`                                                                               |
-| E2-T04 | `src/dominio/candidatas.ts`, `src/dominio/candidatas.test.ts`, `src/dominio/nombre.ts`, `src/dominio/nombre.test.ts`            | —                                                                                                              |
-| E2-T05 | `supabase/migrations/<AAAAMMDDHHMMSS>_sesiones.sql`                                                                             | —                                                                                                              |
-| E2-T06 | `src/dominio/duracion.ts`, `src/dominio/duracion.test.ts`, `src/lib/tmdb.test.ts`                                               | `src/lib/tmdb.ts` (añade `obtenerDuracion` y `obtenerDuraciones`)                                              |
-| E2-T07 | `src/lib/sesiones.ts`, `src/lib/sesiones.test.ts`                                                                               | —                                                                                                              |
-| E2-T08 | —                                                                                                                               | `src/index.css`, `DESIGN.md`                                                                                   |
-| E2-T09 | `src/components/noche/NocheDePelicula.tsx` (versión inicial: título de la vista)                                                | `src/App.tsx`                                                                                                  |
-| E2-T10 | `src/components/noche/FormularioTiempo.tsx`, `src/components/noche/ListaCandidatas.tsx`, `docs/VERIFICACION.md` (sección HU-01) | `src/components/noche/NocheDePelicula.tsx`                                                                     |
-| E2-T11 | `src/components/noche/SesionEnArmado.tsx`                                                                                       | `src/components/noche/NocheDePelicula.tsx`, `docs/VERIFICACION.md` (sección HU-02)                             |
-| E2-T12 | `src/components/noche/GuardarSesion.tsx`, `src/components/noche/SesionesGuardadas.tsx`                                          | `src/components/noche/NocheDePelicula.tsx`, `docs/VERIFICACION.md` (secciones HU-03 a HU-05)                   |
-| E2-T13 | —                                                                                                                               | `docs/VERIFICACION.md` (sección HU-06 y evidencia con dos cuentas)                                             |
-| E2-T14 | —                                                                                                                               | `docs/VERIFICACION.md` (S-xx, DIS-xx, regresión de la E1 y salida de lint, build y test)                       |
+| Ticket | Crea                                                                                                                            | Modifica                                                                                                                                                  |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| E2-T02 | `docs/specs/noche-de-pelicula.md`                                                                                               | —                                                                                                                                                         |
+| E2-T00 | —                                                                                                                               | Todos los archivos de `src/` que Prettier reformatee (`*.ts`, `*.tsx`, `*.css`); sin cambios de comportamiento                                            |
+| E2-T01 | `src/dominio/humo.test.ts` (test de humo; se borra en E2-T03)                                                                   | `package.json`, `package-lock.json`, `vite.config.ts` (bloque `test` de Vitest), `AGENTS.md`                                                              |
+| E2-T03 | `src/dominio/sesion.ts`, `src/dominio/sesion.test.ts`                                                                           | Borra `src/dominio/humo.test.ts`                                                                                                                          |
+| E2-T04 | `src/dominio/candidatas.ts`, `src/dominio/candidatas.test.ts`, `src/dominio/nombre.ts`, `src/dominio/nombre.test.ts`            | —                                                                                                                                                         |
+| E2-T05 | `supabase/migrations/<AAAAMMDDHHMMSS>_sesiones.sql`                                                                             | —                                                                                                                                                         |
+| E2-T06 | `src/dominio/duracion.ts`, `src/dominio/duracion.test.ts`, `src/lib/tmdb.test.ts`                                               | `src/lib/tmdb.ts` (añade `obtenerDuracion` y `obtenerDuraciones`)                                                                                         |
+| E2-T07 | `src/lib/sesiones.ts`, `src/lib/sesiones.test.ts`                                                                               | —                                                                                                                                                         |
+| E2-T08 | —                                                                                                                               | `src/index.css`, `DESIGN.md`                                                                                                                              |
+| E2-T09 | `src/components/noche/NocheDePelicula.tsx` (versión inicial: título de la vista)                                                | `src/App.tsx`                                                                                                                                             |
+| E2-T10 | `src/components/noche/FormularioTiempo.tsx`, `src/components/noche/ListaCandidatas.tsx`, `docs/VERIFICACION.md` (sección HU-01) | `src/components/noche/NocheDePelicula.tsx`                                                                                                                |
+| E2-T11 | `src/components/noche/SesionEnArmado.tsx`                                                                                       | `src/components/noche/NocheDePelicula.tsx`, `docs/VERIFICACION.md` (sección HU-02)                                                                        |
+| E2-T12 | `src/components/noche/GuardarSesion.tsx`, `src/components/noche/SesionesGuardadas.tsx`                                          | `src/components/noche/NocheDePelicula.tsx`, `docs/VERIFICACION.md` (secciones HU-03 a HU-05)                                                              |
+| E2-T13 | —                                                                                                                               | `docs/VERIFICACION.md` (sección HU-06 y evidencia con dos cuentas)                                                                                        |
+| E2-T14 | —                                                                                                                               | `docs/VERIFICACION.md` (S-xx, DIS-xx, regresión de la E1 y salida de lint, build y test)                                                                  |
+| E2-T15 | —                                                                                                                               | `src/App.tsx`, `src/components/Auth.tsx`, `src/components/Buscador.tsx`, `src/components/MiLista.tsx`, `src/components/Detalle.tsx`, `src/index.css` (§9) |
 
 `docs/VERIFICACION.md` se crea en E2-T10 con la primera sección, porque los tickets de pantalla registran ahí su verificación. E2-T14 lo completa y lo cierra.
+
+---
+
+## 9. E2-T15 — Mejora visual de la E1
+
+Resuelve las deudas D-01 y D-04 de `docs/ESTADO-INICIAL.md`. Solo cambia el marcado y las clases de las pantallas de la E1. Los datos, los servicios, el estado de los componentes y los textos no cambian. Antes del código se documentan en `DESIGN.md` §4 y en `docs/diseno/brand-board.html` el selector `.cabecera-usuario` y el estado activo `nav button[aria-current='page']`.
+
+### 9.1 Cambios
+
+| Archivo                   | Cambio                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Buscador.tsx`            | Resultados en `ul.rejilla` > `li.tarjeta`. Cada tarjeta tiene `.insignia` con el tipo, póster `img` (sin atributo `width`) o `.sin-poster`, y `.tarjeta-cuerpo` con `.tarjeta-titulo`, `.tarjeta-meta` (año o "s/f") y el botón "Agregar a mi lista". Error → `.mensaje.mensaje-error`, éxito → `.mensaje.mensaje-exito`, "Buscando..." → `.mensaje` y "No se encontraron resultados." → `.mensaje.mensaje-vacio`. |
+| `MiLista.tsx`             | Títulos en `ul.rejilla` > `li.tarjeta`, con `.insignia` (tipo), póster o `.sin-poster` y `.tarjeta-cuerpo`, que contiene `.tarjeta-titulo` y los controles de siempre en el mismo orden: "Ver detalle", estado, calificación, comentario y "Eliminar". Error → `.mensaje-error`; carga → `.mensaje`; lista vacía y filtro sin coincidencias → `.mensaje-vacio`.                                                    |
+| `Auth.tsx`, `Detalle.tsx` | Error → `.mensaje.mensaje-error`. En `Detalle`, "Cargando detalle..." → `.mensaje`.                                                                                                                                                                                                                                                                                                                                |
+| `App.tsx`                 | Cabecera en este orden: `h1`, `div.cabecera-usuario` (correo + "Cerrar sesión") y `nav`. La navegación conserva sus botones y `aria-current`.                                                                                                                                                                                                                                                                      |
+| `index.css`               | Reglas de `.cabecera-usuario`, `header nav` y `nav button[aria-current='page']`, iguales que en el brand board.                                                                                                                                                                                                                                                                                                    |
+
+Lo que no cambia:
+
+- los handlers;
+- las props;
+- el estado de los componentes;
+- las llamadas a `src/lib/`;
+- el orden de los controles;
+- los textos visibles (incluido el tipo tal como llega, D-21);
+- la estructura de `Detalle`, salvo el color de su error.
+
+### 9.2 Definition of Done
+
+| Criterio | Cómo se comprueba                                                                                                                                                          |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DIS-01   | `grep -rn "style=" src` no encuentra nada en `.tsx`. En el navegador, `document.querySelectorAll('[style]').length === 0` en acceso, Mi lista, detalle y Noche de película |
+| DIS-02   | Duplicado en el buscador → `mensaje-error` en `rgb(255, 92, 92)`. Agregar un título → `mensaje-exito` en `rgb(61, 220, 151)`                                               |
+| DIS-08   | Los resultados y Mi lista tienen `rejilla` y `display: grid`                                                                                                               |
+| DIS-09   | Póster del buscador y de Mi lista: alto ≈ ancho × 1,5                                                                                                                      |
+| DIS-10   | Hover sobre una tarjeta del buscador y de Mi lista                                                                                                                         |
+| DIS-11   | Un título sin póster muestra `.sin-poster` del mismo tamaño                                                                                                                |
+| DIS-14   | A 360px, en Mi lista con resultados y en Noche de película, `document.documentElement.scrollWidth <= window.innerWidth`. "Cerrar sesión" sigue junto al correo             |
+| E1 igual | El recorrido R-01 a R-08 de `docs/VERIFICACION.md` da el mismo resultado. `git diff` no toca `src/lib/`, `src/dominio/` ni `src/components/noche/`                         |
+| Comandos | `npm test`, `npm run lint` y `npm run build` pasan                                                                                                                         |
