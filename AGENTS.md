@@ -8,7 +8,7 @@ Stack: React + TypeScript + Vite, Supabase (Auth + PostgreSQL con RLS), API de T
 - `npm run dev` — servidor local
 - `npm run build` — compilar (incluye chequeo de TypeScript)
 - `npm run lint` — ESLint
-- `npm test` — Vitest (se agrega en la épica E2)
+- `npm test` — Vitest (tests de `src/dominio/` y de las funciones puras de `src/lib/`)
 
 ## Reglas de trabajo
 1. Ninguna funcionalidad sin spec: antes de escribir código debe existir su spec en `docs/specs/`. Si no existe, detente y pídela.
