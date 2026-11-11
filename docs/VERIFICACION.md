@@ -49,3 +49,47 @@ Para los criterios con números concretos conviene tener películas de esas dura
 | CA-02.9  | Con una sesión de 170 min, cambiar el tiempo a 150 y pulsar "Ver qué cabe". | "Tu sesión se pasa por 20 min. Quita películas para poder guardarla." La sesión no se vacía.                                           |                    |
 | CA-02.10 | Con una sesión de 170 min, cambiar el tiempo a 200.                         | "Te quedan 30 min" y "Qué cabe" se actualiza.                                                                                          |                    |
 | CA-02.11 | Intentar agregar una película "Sin duración".                               | El botón está deshabilitado; el motivo lo explica.                                                                                     |                    |
+
+---
+
+## HU-03 — Guardar la sesión (E2-T12)
+
+| Criterio | Qué hacer                                                                         | Resultado esperado                                                                                                                                                                                       | Resultado obtenido |
+| -------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| CA-03.1  | Armar una sesión que cabe y guardarla como "Viernes de terror".                   | "Sesión "Viernes de terror" guardada." La sesión en armado se vacía y la nueva aparece primera en "Sesiones guardadas", con fecha, tiempo disponible, total y películas en el orden en que se agregaron. |                    |
+| CA-03.2  | Con la sesión vacía, escribir un nombre y pulsar "Guardar sesión".                | "Agrega al menos una película para guardar la sesión."                                                                                                                                                   |                    |
+| CA-03.3  | Con películas, guardar sin nombre y luego con " " (solo espacios).                | "Ponle un nombre a la sesión." en ambos casos.                                                                                                                                                           |                    |
+| CA-03.4  | Guardar con el nombre " Maratón de domingo ".                                     | En "Sesiones guardadas" aparece "Maratón de domingo", sin espacios en los extremos.                                                                                                                      |                    |
+| CA-03.5  | Guardar con un nombre de 61 caracteres; luego con uno de 60 que tenga ñ y tildes. | El de 61 se rechaza con "El nombre puede tener como máximo 60 caracteres."; el de 60 se guarda.                                                                                                          |                    |
+| CA-03.6  | Guardar dos sesiones llamadas "Viernes".                                          | Las dos aparecen en "Sesiones guardadas".                                                                                                                                                                |                    |
+| CA-03.7  | Tras guardar, ir a Mi lista.                                                      | Las películas de la sesión siguen en «por ver».                                                                                                                                                          |                    |
+| CA-03.8  | Guardar la misma película en dos sesiones distintas.                              | Se puede; la película sigue apareciendo en "Qué cabe" después de guardar la primera.                                                                                                                     |                    |
+| CA-03.9  | Hacer que la sesión se exceda (CA-02.9) y pulsar "Guardar sesión".                | "Tu sesión se pasa por {n} min. Quita películas para poder guardarla." No se guarda.                                                                                                                     |                    |
+| CA-03.10 | Doble clic rápido en "Guardar sesión".                                            | El botón muestra "Guardando..." deshabilitado y solo se crea una sesión.                                                                                                                                 |                    |
+| CA-03.11 | DevTools → "Offline"; pulsar "Guardar sesión".                                    | Mensaje de error en rojo; la sesión en armado y el nombre siguen ahí. Al volver la conexión, se puede guardar.                                                                                           |                    |
+| CA-03.12 | (Opcional) Con muchas sesiones ya guardadas, guardar otra.                        | Se guarda sin límite.                                                                                                                                                                                    |                    |
+
+---
+
+## HU-04 — Consultar mis sesiones guardadas (E2-T12)
+
+| Criterio | Qué hacer                                                                                      | Resultado esperado                                                                                                          | Resultado obtenido |
+| -------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| CA-04.1  | Guardar tres sesiones seguidas.                                                                | Aparecen de la más reciente a la más antigua.                                                                               |                    |
+| CA-04.2  | Ver una sesión guardada.                                                                       | Nombre, "Creada el {fecha} · Tiempo disponible: {n} min · Total: {n} min" y la lista numerada de películas con su duración. |                    |
+| CA-04.3  | Con una cuenta sin sesiones, entrar en Noche de película.                                      | "Aún no tienes sesiones guardadas. Arma tu primera noche de película."                                                      |                    |
+| CA-04.4  | Eliminar de Mi lista una película que está en una sesión guardada; volver a Noche de película. | La sesión se ve igual que antes, con esa película.                                                                          |                    |
+| CA-04.5  | Marcar como «vista» en Mi lista una película de una sesión guardada.                           | La sesión se ve igual, sin ninguna indicación.                                                                              |                    |
+| CA-04.6  | Buscar cómo editar una sesión guardada.                                                        | No hay campos ni botones para editarla; solo "Eliminar".                                                                    |                    |
+| CA-04.7  | Entrar con "Slow 3G" y luego con "Offline".                                                    | "Cargando tus sesiones..." y, sin conexión, un mensaje de error con "Reintentar".                                           |                    |
+
+---
+
+## HU-05 — Eliminar una sesión (E2-T12)
+
+| Criterio | Qué hacer                                                | Resultado esperado                                                                  | Resultado obtenido |
+| -------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------ |
+| CA-05.1  | Pulsar "Eliminar" en una sesión y aceptar.               | Se pide confirmación con su nombre y la sesión desaparece de la lista.              |                    |
+| CA-05.2  | Pulsar "Eliminar" y cancelar.                            | La sesión sigue ahí, sin cambios.                                                   |                    |
+| CA-05.3  | Con una película en dos sesiones, eliminar una de ellas. | La otra sesión no cambia, y la película sigue en Mi lista con el mismo estado.      |                    |
+| CA-05.4  | DevTools → "Offline"; eliminar una sesión.               | "No se pudo eliminar la sesión. Inténtalo de nuevo." y la sesión sigue en la lista. |                    |

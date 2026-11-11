@@ -15,6 +15,8 @@ import { obtenerDuraciones } from '../../lib/tmdb'
 import FormularioTiempo from './FormularioTiempo'
 import ListaCandidatas from './ListaCandidatas'
 import SesionEnArmado from './SesionEnArmado'
+import GuardarSesion from './GuardarSesion'
+import SesionesGuardadas from './SesionesGuardadas'
 
 // Vista Noche de película (épica E2).
 // Spec: docs/specs/noche-de-pelicula.md §5
@@ -40,6 +42,8 @@ export default function NocheDePelicula() {
   const [candidatas, setCandidatas] = useState<PeliculaCandidata[]>([])
   const [tiempo, setTiempo] = useState<number | null>(null)
   const [sesion, setSesion] = useState<PeliculaEnSesion[]>([])
+  const [exito, setExito] = useState<string | null>(null)
+  const [recargaSesiones, setRecargaSesiones] = useState(0)
 
   useEffect(() => {
     let activo = true
@@ -68,11 +72,19 @@ export default function NocheDePelicula() {
   }
 
   function agregar(p: PeliculaCandidata) {
+    setExito(null)
     setSesion((actual) => [...actual, aPeliculaEnSesion(p)])
   }
 
   function quitar(tmdbId: number) {
+    setExito(null)
     setSesion((actual) => actual.filter((p) => p.tmdbId !== tmdbId))
+  }
+
+  function guardada(nombre: string) {
+    setSesion([])
+    setExito(`Sesión "${nombre}" guardada.`)
+    setRecargaSesiones((n) => n + 1)
   }
 
   const clasificacion =
@@ -124,10 +136,20 @@ export default function NocheDePelicula() {
                 tiempo={tiempo}
                 onQuitar={quitar}
               />
+              <GuardarSesion
+                peliculas={sesion}
+                tiempo={tiempo}
+                onGuardada={guardada}
+              />
             </>
           )}
+
+          {exito && <p className="mensaje mensaje-exito">{exito}</p>}
         </>
       )}
+
+      <h3>Sesiones guardadas</h3>
+      <SesionesGuardadas recarga={recargaSesiones} />
     </section>
   )
 }
