@@ -156,7 +156,6 @@
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-bottom: 20px;
       }
       form {
         display: flex;
@@ -226,6 +225,10 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
         gap: 20px;
+        margin-top: 20px;
+      }
+      h3 + .rejilla {
+        margin-top: 0;
       }
       .tarjeta {
         position: relative;
@@ -779,8 +782,8 @@
         </div>
       </div>
       <p class="tablero-etiqueta">
-        Fila de filtros (<code>.filtros</code>): 8px entre selects y 20px hasta
-        la cuadrícula.
+        Fila de filtros (<code>.filtros</code>): 8px entre selects. Los 20px
+        hasta la cuadrícula son el margen superior de <code>.rejilla</code>.
       </p>
       <div class="tablero-panel">
         <div class="filtros">

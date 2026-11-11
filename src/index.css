@@ -226,6 +226,13 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: 20px;
+  /* Separa la cuadrícula del formulario, los filtros o el mensaje de encima (E2-T15) */
+  margin-top: 20px;
+}
+
+/* Tras un subtítulo, la cuadrícula queda a los 6px del h3, como antes */
+h3 + .rejilla {
+  margin-top: 0;
 }
 
 .tarjeta {
@@ -320,10 +327,9 @@ img {
   text-align: center;
 }
 
-/* Fila de filtros de Mi lista: 8px entre selects y 20px hasta la cuadrícula (E2-T15) */
+/* Fila de filtros de Mi lista: 8px entre selects; los 20px hasta la cuadrícula los da .rejilla (E2-T15) */
 .filtros {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 20px;
 }
