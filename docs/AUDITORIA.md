@@ -28,6 +28,7 @@ Commits de la épica: E2-T03 `6be1430`, E2-T04 `3d19729`, E2-T05 `3d5d798`, E2-T
 | S-xx (22)        | 18     | 0         | 4             |
 | DIS-xx (15)      | 8      | 0         | 7             |
 | Regresión E1 (8) | 8      | 0         | 0             |
+| E2-T15 DoD (14)  | 8      | 0         | 6             |
 
 No hay ningún criterio que **no cumpla**. Los que están **sin verificar** dependen de pruebas manuales que faltan; se recogen en los hallazgos H-03 a H-05.
 
@@ -187,6 +188,29 @@ No hay ningún criterio que **no cumpla**. Los que están **sin verificar** depe
 
 ---
 
+## E2-T15 — Mejora visual de la E1
+
+Criterios de la DoD de la spec §9.2. Evidencia: la sección "E2-T15" de `VERIFICACION.md`, con la prueba en el navegador de Apauki del 11-nov, y los commits `fe6b9e3`, `b23a79d`, `6ea0ca5`, `42991a3` y `4e33819`.
+
+| Criterio             | Estado        | Evidencia                                                                                                                                |
+| -------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| DIS-01               | cumple        | Código: no hay `style=` en ningún `.tsx` de `src` (D-04 resuelta). Falta la comprobación desde la consola del navegador                  |
+| DIS-02               | sin verificar | Falta medir el color computado (H-11)                                                                                                    |
+| DIS-08               | cumple        | VERIFICACION ✔ 11-nov: Mi lista y el buscador se ven en cuadrícula de pósters (D-01 resuelta)                                            |
+| DIS-09               | sin verificar | Falta medir la proporción del póster (H-11)                                                                                              |
+| DIS-10               | sin verificar | Falta probar el hover (H-11)                                                                                                             |
+| DIS-11               | sin verificar | Falta probar un título sin póster (H-11)                                                                                                 |
+| DIS-14               | sin verificar | Falta probar la vista de 360px (H-11)                                                                                                    |
+| Insignia             | cumple        | VERIFICACION ✔ 11-nov: "Película" / "Serie" · test `tipo.test.ts` (D-21 resuelta en la insignia)                                         |
+| Comentario           | cumple        | VERIFICACION ✔ 11-nov: altura normal de input                                                                                            |
+| Espaciado (visual)   | cumple        | VERIFICACION ✔ 11-nov: separación entre los filtros y la cuadrícula, y entre el buscador y los resultados                                |
+| Espaciado (Computed) | sin verificar | Faltan los valores en DevTools → Computed (H-11)                                                                                         |
+| Cabecera             | cumple        | VERIFICACION ✔ 11-nov: en una línea y con la vista activa marcada                                                                        |
+| E1 igual             | cumple        | VERIFICACION ✔ 11-nov: búsqueda y agregar «Disney Channel Games» · `git diff d9b6d0c HEAD` no toca `src/lib/` ni `src/components/noche/` |
+| Comandos             | cumple        | VERIFICACION: test (82), lint y build pasan sobre `4e33819`                                                                              |
+
+---
+
 ## Hallazgos
 
 | Id   | Hallazgo                                                                                                                                                                                   | Resolución                                                                                                                                                                                                                                                                                                         |
@@ -201,3 +225,4 @@ No hay ningún criterio que **no cumpla**. Los que están **sin verificar** depe
 | H-08 | No hay capturas de la E2: `docs/evidencia/` está vacía y el README solo muestra la E1.                                                                                                     | **Pendiente.** Se agregarán cuando se termine la verificación manual (H-03 a H-05).                                                                                                                                                                                                                                |
 | H-09 | La función de dominio `minutosDePausas` (`src/dominio/sesion.ts`, con test) no aparecía en la spec §3.1.                                                                                   | **Corregido** en el commit `docs: registra regresión de la E1 y alinea la spec`: está en la firma, en la tabla de funciones y en los tests de §3.1.                                                                                                                                                                |
 | H-10 | El README decía `.env` en lugar de `.env.local`, tenía un enlace de ejemplo y el encabezado de capturas duplicado (deuda D-16).                                                            | **Corregido** en el commit `docs(readme): épica E2, tests y harness`.                                                                                                                                                                                                                                              |
+| H-11 | En la DoD de E2-T15 quedan sin verificar DIS-02, DIS-09, DIS-10, DIS-11, DIS-14 (360px) y los valores del espaciado en Computed.                                                           | **Pendiente.** Requieren DevTools (Computed, modo responsive y medición) en el navegador. Las reglas están en `index.css` y documentadas en `DESIGN.md`.                                                                                                                                                           |

@@ -264,3 +264,28 @@ dist/assets/index-DpSEYug0.js   458.97 kB │ gzip: 130.37 kB
 - La regresión de la E1 está completa: ✔ 11-nov.
 - La épica se cierra **con pendientes**, por lo que la Definition of Done de E2-T14 no se cumple del todo: faltan las pruebas RLS desde la consola (CA-06.2) y hay CA y DIS sin verificar en el navegador. El detalle y la razón de cada uno están en `docs/AUDITORIA.md`.
 - `npm test`, `npm run lint` y `npm run build` pasan.
+
+---
+
+## E2-T15 — Mejora visual de la E1
+
+DoD de `docs/specs/noche-de-pelicula.md` §9.2. Apauki lo probó en el navegador el 11-nov, con el código del commit `4e33819`. No se usó DevTools → Computed ni la vista de 360px: esos criterios quedan sin verificar.
+
+| Criterio             | Qué se comprobó                                                                                                                                                                                                       | Resultado obtenido            |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| DIS-01               | `grep -rn "style=" src --include=*.tsx` no devuelve nada. No se ejecutó la comprobación desde la consola del navegador.                                                                                               | ✔ Código · 11-nov             |
+| DIS-02               | Color computado de `mensaje-error` y `mensaje-exito`.                                                                                                                                                                 | Sin verificar                 |
+| DIS-08               | Mi lista y los resultados del buscador se ven como cuadrícula de pósters.                                                                                                                                             | ✔ Probado por Apauki · 11-nov |
+| DIS-09               | Medir la proporción 2:3 del póster.                                                                                                                                                                                   | Sin verificar                 |
+| DIS-10               | Hover sobre una tarjeta del buscador y de Mi lista.                                                                                                                                                                   | Sin verificar                 |
+| DIS-11               | Un título sin póster muestra `.sin-poster` del mismo tamaño.                                                                                                                                                          | Sin verificar                 |
+| DIS-14               | Vista de 360px sin scroll horizontal, con "Cerrar sesión" junto al correo.                                                                                                                                            | Sin verificar                 |
+| Insignia             | Las tarjetas dicen "Película" o "Serie".                                                                                                                                                                              | ✔ Probado por Apauki · 11-nov |
+| Comentario           | El campo de comentario de la tarjeta tiene la altura normal de un input.                                                                                                                                              | ✔ Probado por Apauki · 11-nov |
+| Espaciado (visual)   | Hay separación entre los selects de filtro, entre los filtros y la cuadrícula, y entre el formulario del buscador y los resultados.                                                                                   | ✔ Probado por Apauki · 11-nov |
+| Espaciado (Computed) | `.filtros` con `gap` de 8px; `.rejilla` con `margin-top` de 20px, y de 0 debajo de "Qué cabe" y "Sesiones guardadas".                                                                                                 | Sin verificar                 |
+| Cabecera             | El título, el correo y "Cerrar sesión" están en una línea, y la vista activa de la navegación está marcada.                                                                                                           | ✔ Probado por Apauki · 11-nov |
+| E1 igual             | La E1 funciona igual: se buscó y se agregó «Disney Channel Games» sin problemas. Desde `d9b6d0c`, `git diff` no toca `src/lib/` ni `src/components/noche/`; en `src/dominio/` solo agrega `tipo.ts` y `tipo.test.ts`. | ✔ Probado por Apauki · 11-nov |
+| Comandos             | `npm test` (7 archivos, 82 tests), `npm run lint` y `npm run build` pasan sobre `4e33819`.                                                                                                                            | ✔ 11-nov                      |
+
+Resumen de E2-T15: 8 ✔ y 6 sin verificar (DIS-02, DIS-09, DIS-10, DIS-11, DIS-14 y el espaciado en Computed). No hay ningún ✘.
