@@ -2,7 +2,7 @@
 
 ## Proyecto
 App web para registrar películas y series (por ver / viendo / vista) con calificación y comentario.
-Stack: React + TypeScript + Vite, Supabase (Auth + PostgreSQL con RLS), API de TMDB, Bootstrap.
+Stack: React + TypeScript + Vite, Supabase (Auth + PostgreSQL con RLS), API de TMDB. Estilos con CSS propio en `src/index.css`, documentado en `DESIGN.md` (sin Bootstrap; ver D-02 en docs/ESTADO-INICIAL.md).
 
 ## Comandos
 - `npm run dev` — servidor local
