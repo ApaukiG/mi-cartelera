@@ -609,7 +609,7 @@ Cambios en `src/App.tsx`:
 | Componente          | Props                                                                                                                 | Estado interno                                                                                                                                                                                                         |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `NocheDePelicula`   | —                                                                                                                     | `carga: 'cargando' \| 'lista' \| 'error'`, `errorCarga: string \| null`, `candidatas: PeliculaCandidata[]`, `tiempo: number \| null`, `sesion: PeliculaEnSesion[]`, `exito: string \| null`, `recargaSesiones: number` |
-| `FormularioTiempo`  | `onConfirmar: (minutos: number) => void`                                                                              | `texto: string`, `error: ErrorTiempo \| null`                                                                                                                                                                          |
+| `FormularioTiempo`  | `onConfirmar: (minutos: number) => void`, `onInvalido: () => void`                                                    | `texto: string`, `error: ErrorTiempo \| null`                                                                                                                                                                          |
 | `ListaCandidatas`   | `clasificacion: Clasificacion`, `tiempo: number`, `sesionVacia: boolean`, `onAgregar: (p: PeliculaCandidata) => void` | —                                                                                                                                                                                                                      |
 | `SesionEnArmado`    | `peliculas: readonly PeliculaEnSesion[]`, `tiempo: number`, `onQuitar: (tmdbId: number) => void`                      | —                                                                                                                                                                                                                      |
 | `GuardarSesion`     | `peliculas: readonly PeliculaEnSesion[]`, `tiempo: number`, `onGuardada: (nombre: string) => void`                    | `texto: string`, `guardando: boolean`, `error: string \| null`                                                                                                                                                         |
@@ -618,7 +618,7 @@ Cambios en `src/App.tsx`:
 **Flujo de `NocheDePelicula`**
 
 1. Al montarse: `obtenerLista()` → `peliculasPorVer()` → `obtenerDuraciones(ids)` → `aCandidatas()`. Mientras tanto, `carga = 'cargando'`.
-2. `FormularioTiempo` valida con `validarTiempoDisponible` y llama a `onConfirmar(minutos)`. Volver a enviar otro tiempo **no** vacía la sesión (RN-12) y no vuelve a llamar a TMDB (S-17).
+2. `FormularioTiempo` valida con `validarTiempoDisponible` y llama a `onConfirmar(minutos)`. Volver a enviar otro tiempo **no** vacía la sesión (RN-12) y no vuelve a llamar a TMDB (S-17). Si el texto no es válido, muestra el error y llama a `onInvalido()`; `NocheDePelicula` pone `tiempo = null` para dejar de mostrar películas (CA-01.4, CA-01.5), y la sesión en armado se conserva.
 3. Con `tiempo` definido, se calcula `clasificarCandidatas(candidatas, sesion, tiempo)` en cada render y se pasa a `ListaCandidatas`.
 4. `onAgregar` hace `setSesion([...sesion, aPeliculaEnSesion(p)])`; `onQuitar` filtra por `tmdbId`.
 5. `GuardarSesion` valida con `validarNombreSesion` y `validarSesionParaGuardar`, y llama a `crearSesion`. Si va bien, `onGuardada(nombre)`: se vacía `sesion`, se muestra el éxito y se incrementa `recargaSesiones`. Si falla, la sesión en armado se conserva (CA-03.11).
@@ -692,7 +692,7 @@ La cifra "10" del motivo se toma de `PAUSA_MIN`.
 | Error del servicio   | `.mensaje .mensaje-error` | Mensaje de `crearSesion` (sección 4.2)                                      |
 | Éxito                | `.mensaje .mensaje-exito` | `Sesión "{nombre}" guardada.`                                               |
 
-**Sesiones guardadas** (`ul` de `li.tarjeta` > `.tarjeta-cuerpo`, sin póster)
+**Sesiones guardadas** (`ul.rejilla` > `li.tarjeta` > `.tarjeta-cuerpo`, sin póster)
 
 | Elemento / situación | Clase                     | Texto                                                                                     |
 | -------------------- | ------------------------- | ----------------------------------------------------------------------------------------- |
@@ -853,7 +853,7 @@ Notación de los tests: `archivo › describe › it`. "Navegador" significa pru
 | DIS-05   | Recorrer con Tab el campo de tiempo, las tarjetas, la sesión, el nombre y las sesiones guardadas                   |
 | DIS-06   | Dos formularios ("Ver qué cabe" y "Guardar sesión"), cada uno con un solo `button[type='submit']`                  |
 | DIS-07   | "Guardar sesión" mientras guarda; "Agregar a la sesión" en las no disponibles                                      |
-| DIS-08   | El contenedor de candidatas tiene la clase `rejilla` y `display: grid`                                             |
+| DIS-08   | Los contenedores de candidatas y de sesiones guardadas tienen la clase `rejilla` y `display: grid`                 |
 | DIS-09   | Póster de una candidata: alto ≈ ancho × 1,5                                                                        |
 | DIS-10   | Hover sobre una tarjeta de candidata                                                                               |
 | DIS-11   | Una candidata sin póster muestra `.sin-poster` del mismo tamaño                                                    |
