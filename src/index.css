@@ -319,3 +319,11 @@ img {
   color: var(--suave);
   text-align: center;
 }
+
+/* Fila de filtros de Mi lista: 8px entre selects y 20px hasta la cuadrícula (E2-T15) */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}

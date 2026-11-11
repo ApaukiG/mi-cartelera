@@ -116,25 +116,27 @@ export default function MiLista({ recarga = 0 }: MiListaProps) {
         </p>
       )}
 
-      <select
-        value={filtro}
-        onChange={(e) => setFiltro(e.target.value as Estado | 'todas')}
-      >
-        <option value="todas">Todas</option>
-        <option value="por_ver">Por ver</option>
-        <option value="viendo">Viendo</option>
-        <option value="vista">Vistas</option>
-      </select>
+      <div className="filtros">
+        <select
+          value={filtro}
+          onChange={(e) => setFiltro(e.target.value as Estado | 'todas')}
+        >
+          <option value="todas">Todas</option>
+          <option value="por_ver">Por ver</option>
+          <option value="viendo">Viendo</option>
+          <option value="vista">Vistas</option>
+        </select>
 
-      <select
-        value={orden}
-        onChange={(e) =>
-          setOrden(e.target.value as 'recientes' | 'calificacion')
-        }
-      >
-        <option value="recientes">Más recientes primero</option>
-        <option value="calificacion">Mejor calificadas primero</option>
-      </select>
+        <select
+          value={orden}
+          onChange={(e) =>
+            setOrden(e.target.value as 'recientes' | 'calificacion')
+          }
+        >
+          <option value="recientes">Más recientes primero</option>
+          <option value="calificacion">Mejor calificadas primero</option>
+        </select>
+      </div>
 
       {!cargando && !error && titulos.length > 0 && visibles.length === 0 && (
         <p className="mensaje mensaje-vacio">

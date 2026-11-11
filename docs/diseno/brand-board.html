@@ -152,6 +152,12 @@
         font-weight: 600;
       }
 
+      .filtros {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
       form {
         display: flex;
         flex-wrap: wrap;
@@ -769,6 +775,19 @@
           <span class="tablero-etiqueta">Select con foco</span
           ><select class="simula-foco">
             <option>4 ★</option>
+          </select>
+        </div>
+      </div>
+      <p class="tablero-etiqueta">
+        Fila de filtros (<code>.filtros</code>): 8px entre selects y 20px hasta
+        la cuadrícula.
+      </p>
+      <div class="tablero-panel">
+        <div class="filtros">
+          <select>
+            <option>Todas</option></select
+          ><select>
+            <option>Más recientes primero</option>
           </select>
         </div>
       </div>
