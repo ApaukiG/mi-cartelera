@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Cartelera Personal — Brand board</title>
+    <style>
+      /* ============================================================
+   1. Copia literal de src/index.css (tokens + estilos de la app)
+   ============================================================ */
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap');
+
+      :root {
+        --bg: #07080d;
+        --panel: rgba(18, 20, 30, 0.78);
+        --panel-2: #1a1d2b;
+        --borde: rgba(255, 255, 255, 0.1);
+        --texto: #ececf3;
+        --suave: #9a9fb5;
+        --acento: #ff9f43;
+        --frio: #2ec4d6;
+        color-scheme: dark;
+
+        /* [NUEVO] propuestos en DESIGN.md; aún no existen en src/index.css */
+        --texto-sobre-acento: #1a1206;
+        --error: #ff5c5c;
+        --exito: #3ddc97;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--texto);
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            900px 420px at 0% 0%,
+            rgba(46, 196, 214, 0.28),
+            transparent 65%
+          ),
+          radial-gradient(
+            800px 380px at 100% 25%,
+            rgba(255, 159, 67, 0.24),
+            transparent 65%
+          ),
+          linear-gradient(
+            103deg,
+            transparent 18%,
+            rgba(255, 159, 67, 0.2) 19%,
+            transparent 21%
+          ),
+          linear-gradient(
+            98deg,
+            transparent 33%,
+            rgba(46, 196, 214, 0.16) 34%,
+            transparent 35.5%
+          ),
+          linear-gradient(
+            106deg,
+            transparent 58%,
+            rgba(255, 80, 80, 0.14) 59%,
+            transparent 60.5%
+          );
+        filter: blur(5px);
+      }
+
+      #root {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 24px 16px 72px;
+      }
+
+      h1,
+      h2 {
+        font-family: 'Cinzel', Georgia, serif;
+        letter-spacing: 0.04em;
+      }
+      h1 {
+        font-size: 2.2rem;
+        margin: 0;
+      }
+      h2 {
+        font-size: 1.5rem;
+        margin: 36px 0 12px;
+      }
+      h3 {
+        font-size: 1rem;
+        margin: 20px 0 6px;
+        color: var(--acento);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      p {
+        margin: 8px 0;
+      }
+
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--borde);
+      }
+      header h1 {
+        flex: 1 1 auto;
+      }
+      header span {
+        color: var(--suave);
+        font-size: 0.9rem;
+      }
+
+      form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      input,
+      select {
+        background: var(--panel-2);
+        color: var(--texto);
+        border: 1px solid var(--borde);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font: inherit;
+      }
+      input[type='text'],
+      input[type='email'],
+      input[type='password'] {
+        flex: 1 1 200px;
+      }
+
+      input:focus,
+      select:focus,
+      button:focus-visible {
+        outline: 2px solid var(--acento);
+        outline-offset: 1px;
+      }
+
+      button {
+        background: var(--panel-2);
+        color: var(--texto);
+        border: 1px solid var(--borde);
+        border-radius: 8px;
+        padding: 8px 14px;
+        font: inherit;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          transform 0.15s;
+      }
+      button:hover:not(:disabled) {
+        border-color: var(--acento);
+      }
+      button[type='submit'] {
+        background: var(--acento);
+        border-color: transparent;
+        color: var(--texto-sobre-acento);
+        font-weight: 600;
+      }
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      img {
+        display: block;
+        border-radius: 6px;
+      }
+
+      .rejilla {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+        gap: 20px;
+      }
+      .tarjeta {
+        position: relative;
+        background: var(--panel);
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+      .tarjeta:hover {
+        transform: translateY(-4px);
+        border-color: var(--acento);
+      }
+      .tarjeta img {
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        object-fit: cover;
+        border-radius: 0;
+      }
+      .sin-poster {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 2 / 3;
+        color: var(--suave);
+        background: var(--panel-2);
+      }
+      .tarjeta-cuerpo {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+      }
+      .tarjeta-titulo {
+        font-family: 'Cinzel', Georgia, serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        line-height: 1.25;
+      }
+      .tarjeta-meta {
+        color: var(--suave);
+        font-size: 0.8rem;
+      }
+      .tarjeta-cuerpo select,
+      .tarjeta-cuerpo input,
+      .tarjeta-cuerpo button {
+        width: 100%;
+        font-size: 0.85rem;
+        padding: 6px 8px;
+      }
+      .insignia {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.7);
+        color: var(--acento);
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      /* [NUEVO] mensajes de estado propuestos en DESIGN.md */
+      .mensaje {
+        color: var(--suave);
+      }
+      .mensaje-error {
+        color: var(--error);
+      }
+      .mensaje-exito {
+        color: var(--exito);
+      }
+      .mensaje-vacio {
+        color: var(--suave);
+        text-align: center;
+      }
+
+      /* ============================================================
+   2. Solo para este tablero (maquetación y simulaciones).
+      No forman parte del sistema de diseño.
+   ============================================================ */
+      .tablero-intro {
+        color: var(--suave);
+        max-width: 720px;
+      }
+      .tablero-panel {
+        background: var(--panel);
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .tablero-fila {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .tablero-col {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      /* En columna, el flex: 1 1 200px de los inputs estiraría su alto */
+      .tablero-col input {
+        flex: none;
+      }
+      /* Contenedor posicionado para mostrar .insignia fuera de una tarjeta */
+      .tablero-insignia {
+        position: relative;
+        min-height: 24px;
+      }
+      .tablero-correo {
+        color: var(--suave);
+        font-size: 0.9rem;
+      }
+      .tablero-etiqueta {
+        color: var(--suave);
+        font-size: 0.8rem;
+      }
+      .tablero-principios {
+        padding-left: 20px;
+        margin: 0;
+      }
+      .tablero-principios li {
+        margin: 6px 0;
+      }
+      .tablero-principios strong {
+        color: var(--acento);
+        font-weight: 600;
+      }
+      .tablero-tipo > * {
+        margin: 0;
+      }
+      .tablero-tipo {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 14px 20px;
+        align-items: center;
+      }
+      .tablero-tarjetas {
+        max-width: 600px;
+      }
+      .tablero-mini {
+        max-width: 600px;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      code {
+        font-family: ui-monospace, Consolas, monospace;
+        font-size: 0.85em;
+        color: var(--suave);
+      }
+
+      /* Paleta */
+      .paleta {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .muestra {
+        background: var(--panel);
+        border: 1px solid var(--borde);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .muestra-color {
+        height: 80px;
+        border-bottom: 1px solid var(--borde);
+      }
+      .muestra-datos {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+      }
+      .muestra-datos > code {
+        display: block;
+        color: var(--texto);
+      }
+      .muestra-uso {
+        color: var(--suave);
+        margin-top: 4px;
+      }
+      .nuevo-marca {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 0 6px;
+        border-radius: 999px;
+        border: 1px solid var(--acento);
+        color: var(--acento);
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+      .c-bg {
+        background: var(--bg);
+      }
+      .c-panel {
+        background: var(--panel);
+      }
+      .c-panel-2 {
+        background: var(--panel-2);
+      }
+      .c-borde {
+        background: var(--borde);
+      }
+      .c-texto {
+        background: var(--texto);
+      }
+      .c-suave {
+        background: var(--suave);
+      }
+      .c-acento {
+        background: var(--acento);
+      }
+      .c-frio {
+        background: var(--frio);
+      }
+      .c-sobre-acento {
+        background: var(--texto-sobre-acento);
+      }
+      .c-error {
+        background: var(--error);
+      }
+      .c-exito {
+        background: var(--exito);
+      }
+
+      /* Estados simulados: copian las reglas reales de :hover y :focus-visible */
+      button.simula-hover {
+        border-color: var(--acento);
+      }
+      .simula-foco {
+        outline: 2px solid var(--acento);
+        outline-offset: 1px;
+      }
+
+      /* Pósters ficticios (en la app son imágenes de TMDB) */
+      .poster-falso {
+        aspect-ratio: 2 / 3;
+        display: flex;
+        align-items: flex-end;
+        padding: 12px;
+        font-family: 'Cinzel', Georgia, serif;
+        font-weight: 700;
+        color: var(--texto);
+      }
+      .poster-1 {
+        background: linear-gradient(160deg, var(--frio), var(--panel-2) 70%);
+      }
+      .poster-2 {
+        background: linear-gradient(160deg, var(--acento), var(--panel-2) 70%);
+      }
+
+      /* Prohibido */
+      .prohibido {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .prohibido-item {
+        position: relative;
+        background: var(--panel);
+        border: 1px dashed var(--borde);
+        border-radius: 10px;
+        padding: 14px;
+      }
+      .prohibido-ejemplo {
+        text-decoration: line-through;
+        text-decoration-thickness: 2px;
+        opacity: 0.8;
+      }
+      .prohibido-item::after {
+        content: '✕';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        color: var(--suave);
+        font-weight: 700;
+      }
+      .mal-rojo {
+        color: red;
+      }
+      .mal-verde {
+        color: lightgreen;
+      }
+      .mal-fuente {
+        font-family: 'Comic Sans MS', cursive;
+      }
+      .mal-bootstrap {
+        background: #0d6efd;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+      }
+
+      @media (max-width: 600px) {
+        .tablero-tipo {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+        .tablero-mini {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- 1. Nombre y principios -->
+      <header>
+        <h1>Mi Cartelera Personal</h1>
+        <span>Brand board · sistema de diseño de <code>DESIGN.md</code></span>
+      </header>
+
+      <p class="tablero-intro">
+        Representación visual del CSS propio de la app
+        (<code>src/index.css</code>), sin Bootstrap. Lo marcado
+        <span class="nuevo-marca">NUEVO</span> es una propuesta para la épica E2
+        que todavía no existe en el código.
+      </p>
+
+      <h2>Principios visuales</h2>
+      <ol class="tablero-principios">
+        <li>
+          <strong>Sala de cine de noche.</strong> Fondo casi negro con destellos
+          de luz difuminados.
+        </li>
+        <li>
+          <strong>El póster es el protagonista.</strong> Formato 2:3; el resto
+          de la interfaz es sobrio.
+        </li>
+        <li>
+          <strong>Un solo acento cálido.</strong> El naranja marca la acción
+          principal, el foco y el hover.
+        </li>
+        <li>
+          <strong>Títulos con carácter, texto legible.</strong> Cinzel para
+          títulos, fuente del sistema para el resto.
+        </li>
+        <li>
+          <strong>Superficies discretas.</strong> Paneles oscuros, borde blanco
+          al 10 %, esquinas suaves.
+        </li>
+      </ol>
+
+      <!-- 2. Paleta -->
+      <h2>Paleta</h2>
+      <div class="paleta">
+        <div class="muestra">
+          <div class="muestra-color c-bg"></div>
+          <div class="muestra-datos">
+            <code>--bg</code><code>#07080d</code>
+            <div class="muestra-uso">Fondo de la página</div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-panel"></div>
+          <div class="muestra-datos">
+            <code>--panel</code><code>rgba(18, 20, 30, 0.78)</code>
+            <div class="muestra-uso">Fondo de <code>.tarjeta</code></div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-panel-2"></div>
+          <div class="muestra-datos">
+            <code>--panel-2</code><code>#1a1d2b</code>
+            <div class="muestra-uso">
+              Botones, inputs, selects, <code>.sin-poster</code>
+            </div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-borde"></div>
+          <div class="muestra-datos">
+            <code>--borde</code><code>rgba(255, 255, 255, 0.1)</code>
+            <div class="muestra-uso">Bordes y separador de la cabecera</div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-texto"></div>
+          <div class="muestra-datos">
+            <code>--texto</code><code>#ececf3</code>
+            <div class="muestra-uso">Texto principal</div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-suave"></div>
+          <div class="muestra-datos">
+            <code>--suave</code><code>#9a9fb5</code>
+            <div class="muestra-uso">Texto secundario, meta, "Sin póster"</div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-acento"></div>
+          <div class="muestra-datos">
+            <code>--acento</code><code>#ff9f43</code>
+            <div class="muestra-uso">
+              Botón principal, foco, hover, <code>h3</code>, insignia
+            </div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-frio"></div>
+          <div class="muestra-datos">
+            <code>--frio</code><code>#2ec4d6</code>
+            <div class="muestra-uso">Solo en los destellos del fondo</div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-sobre-acento"></div>
+          <div class="muestra-datos">
+            <code
+              >--texto-sobre-acento <span class="nuevo-marca">NUEVO</span></code
+            ><code>#1a1206</code>
+            <div class="muestra-uso">Texto del botón principal</div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-error"></div>
+          <div class="muestra-datos">
+            <code>--error <span class="nuevo-marca">NUEVO</span></code
+            ><code>#ff5c5c</code>
+            <div class="muestra-uso">
+              Mensajes de error (sustituye a <code>red</code>)
+            </div>
+          </div>
+        </div>
+        <div class="muestra">
+          <div class="muestra-color c-exito"></div>
+          <div class="muestra-datos">
+            <code>--exito <span class="nuevo-marca">NUEVO</span></code
+            ><code>#3ddc97</code>
+            <div class="muestra-uso">
+              Mensajes de éxito (sustituye a <code>lightgreen</code>)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Tipografía -->
+      <h2>Tipografía</h2>
+      <div class="tablero-panel tablero-tipo">
+        <span class="tablero-etiqueta">h1 · Cinzel 700 · 2.2rem</span>
+        <h1>Mi Cartelera</h1>
+        <span class="tablero-etiqueta">h2 · Cinzel 700 · 1.5rem</span>
+        <h2>Mi lista</h2>
+        <span class="tablero-etiqueta">h3 · sistema · 1rem · acento</span>
+        <h3>Sinopsis</h3>
+        <span class="tablero-etiqueta">Cuerpo · sistema · 1rem / 1.5</span>
+        <p>Tienes 3 pendientes, 1 en progreso, 5 vistas.</p>
+        <span class="tablero-etiqueta">Texto suave · 0.9rem</span>
+        <span class="tablero-correo">usuario@ejemplo.com</span>
+        <span class="tablero-etiqueta"
+          >.tarjeta-titulo · Cinzel 700 · 0.95rem</span
+        >
+        <span class="tarjeta-titulo">El viaje de la noche</span>
+        <span class="tablero-etiqueta">.tarjeta-meta · 0.8rem · suave</span>
+        <span class="tarjeta-meta">Película · 2024</span>
+        <span class="tablero-etiqueta">.insignia · 0.75rem · 600</span>
+        <div class="tablero-insignia"><span class="insignia">Viendo</span></div>
+      </div>
+
+      <!-- 4. Componentes -->
+      <h2>Componentes</h2>
+
+      <h3>Botón principal · <code>button[type='submit']</code></h3>
+      <div class="tablero-panel tablero-fila">
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Normal</span
+          ><button type="submit">Buscar</button>
+        </div>
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Foco</span
+          ><button type="submit" class="simula-foco">Buscar</button>
+        </div>
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Deshabilitado</span
+          ><button type="submit" disabled>Buscar</button>
+        </div>
+      </div>
+
+      <h3>Botón secundario · <code>button</code></h3>
+      <div class="tablero-panel tablero-fila">
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Normal</span
+          ><button type="button">Ver detalle</button>
+        </div>
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Hover (simulado)</span
+          ><button type="button" class="simula-hover">Ver detalle</button>
+        </div>
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Foco</span
+          ><button type="button" class="simula-foco">Ver detalle</button>
+        </div>
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Deshabilitado</span
+          ><button type="button" disabled>Agregando...</button>
+        </div>
+      </div>
+
+      <h3>Input y select</h3>
+      <div class="tablero-panel tablero-fila">
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Input normal</span
+          ><input type="text" placeholder="Busca una película o serie..." />
+        </div>
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Input con foco</span
+          ><input type="text" class="simula-foco" value="Matrix" />
+        </div>
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Select normal</span
+          ><select>
+            <option>Por ver</option>
+            <option>Viendo</option>
+            <option>Vista</option>
+          </select>
+        </div>
+        <div class="tablero-col">
+          <span class="tablero-etiqueta">Select con foco</span
+          ><select class="simula-foco">
+            <option>4 ★</option>
+          </select>
+        </div>
+      </div>
+      <p class="tablero-etiqueta">
+        Formulario (<code>form</code>): input que crece + botón principal, con
+        salto de línea.
+      </p>
+      <form class="tablero-panel" onsubmit="return false">
+        <input type="text" placeholder="Busca una película o serie..." />
+        <button type="submit">Buscar</button>
+      </form>
+
+      <h3>
+        Tarjeta de póster · <code>.tarjeta</code> + <code>.insignia</code> y
+        <code>.sin-poster</code>
+      </h3>
+      <ul class="rejilla tablero-tarjetas">
+        <li class="tarjeta">
+          <span class="insignia">4 ★</span>
+          <div class="poster-falso poster-2">El viaje de la noche</div>
+          <div class="tarjeta-cuerpo">
+            <span class="tarjeta-titulo">El viaje de la noche</span>
+            <span class="tarjeta-meta">Película · 2024</span>
+            <select>
+              <option>Viendo</option>
+            </select>
+            <button type="button">Ver detalle</button>
+          </div>
+        </li>
+        <li class="tarjeta">
+          <span class="insignia">Por ver</span>
+          <div class="sin-poster">Sin póster</div>
+          <div class="tarjeta-cuerpo">
+            <span class="tarjeta-titulo">Título sin imagen</span>
+            <span class="tarjeta-meta">Serie · 2019</span>
+            <select>
+              <option>Por ver</option>
+            </select>
+            <button type="button">Ver detalle</button>
+          </div>
+        </li>
+      </ul>
+      <p class="tablero-etiqueta">
+        Pasa el ratón por encima: la tarjeta sube 4px y el borde se vuelve
+        naranja. Los pósters son ficticios; en la app son imágenes de TMDB.
+      </p>
+
+      <h3>Cuadrícula · <code>.rejilla</code> (mini, 3 tarjetas)</h3>
+      <ul class="rejilla tablero-mini">
+        <li class="tarjeta">
+          <span class="insignia">Vista</span>
+          <div class="poster-falso poster-1">Ciudad fría</div>
+          <div class="tarjeta-cuerpo">
+            <span class="tarjeta-titulo">Ciudad fría</span
+            ><span class="tarjeta-meta">Película · 2021</span>
+          </div>
+        </li>
+        <li class="tarjeta">
+          <span class="insignia">5 ★</span>
+          <div class="poster-falso poster-2">Luz de neón</div>
+          <div class="tarjeta-cuerpo">
+            <span class="tarjeta-titulo">Luz de neón</span
+            ><span class="tarjeta-meta">Serie · 2023</span>
+          </div>
+        </li>
+        <li class="tarjeta">
+          <div class="sin-poster">Sin póster</div>
+          <div class="tarjeta-cuerpo">
+            <span class="tarjeta-titulo">Sin título visual</span
+            ><span class="tarjeta-meta">Película · 2018</span>
+          </div>
+        </li>
+      </ul>
+
+      <h3>
+        Mensajes de estado · <code>.mensaje</code>
+        <span class="nuevo-marca">NUEVO</span>
+      </h3>
+      <div class="tablero-panel">
+        <p class="tablero-etiqueta">Carga · <code>.mensaje</code></p>
+        <p class="mensaje">Buscando...</p>
+        <p class="tablero-etiqueta">
+          Error · <code>.mensaje.mensaje-error</code>
+        </p>
+        <p class="mensaje mensaje-error">Ese título ya está en tu lista.</p>
+        <p class="tablero-etiqueta">
+          Éxito · <code>.mensaje.mensaje-exito</code>
+        </p>
+        <p class="mensaje mensaje-exito">
+          "El viaje de la noche" se agregó a tu lista.
+        </p>
+        <p class="tablero-etiqueta">
+          Vacío · <code>.mensaje.mensaje-vacio</code>
+        </p>
+        <p class="mensaje mensaje-vacio">
+          Tu lista está vacía. Busca algo y agrégalo.
+        </p>
+      </div>
+
+      <!-- 5. Prohibido -->
+      <h2>Prohibido</h2>
+      <div class="prohibido">
+        <div class="prohibido-item">
+          <p class="tablero-etiqueta">
+            Colores fuera de la paleta (<code>red</code>)
+          </p>
+          <p class="prohibido-ejemplo mal-rojo">No se pudo agregar</p>
+          <p class="tablero-etiqueta">Usar <code>.mensaje-error</code></p>
+        </div>
+        <div class="prohibido-item">
+          <p class="tablero-etiqueta">
+            Colores fuera de la paleta (<code>lightgreen</code>)
+          </p>
+          <p class="prohibido-ejemplo mal-verde">Se agregó a tu lista</p>
+          <p class="tablero-etiqueta">Usar <code>.mensaje-exito</code></p>
+        </div>
+        <div class="prohibido-item">
+          <p class="tablero-etiqueta">Estilos en línea</p>
+          <p class="prohibido-ejemplo"><code>style={{ color: 'red' }}</code></p>
+          <p class="tablero-etiqueta">
+            Todo estilo va en una clase de <code>src/index.css</code>
+          </p>
+        </div>
+        <div class="prohibido-item">
+          <p class="tablero-etiqueta">Fuentes nuevas</p>
+          <p class="prohibido-ejemplo mal-fuente">Mi lista</p>
+          <p class="tablero-etiqueta">Solo Cinzel y la fuente del sistema</p>
+        </div>
+        <div class="prohibido-item">
+          <p class="tablero-etiqueta">Bootstrap u otras librerías de UI</p>
+          <p class="prohibido-ejemplo">
+            <button type="button" class="mal-bootstrap">btn btn-primary</button>
+          </p>
+          <p class="tablero-etiqueta">Ni Bootstrap, ni Tailwind, ni MUI</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
