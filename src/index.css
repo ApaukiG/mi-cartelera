@@ -9,6 +9,9 @@
   --suave: #9a9fb5;
   --acento: #ff9f43;
   --frio: #2ec4d6;
+  --texto-sobre-acento: #1a1206;
+  --error: #ff5c5c;
+  --exito: #3ddc97;
   color-scheme: dark;
 }
 
@@ -170,7 +173,7 @@ button:hover:not(:disabled) {
 button[type='submit'] {
   background: var(--acento);
   border-color: transparent;
-  color: #1a1206;
+  color: var(--texto-sobre-acento);
   font-weight: 600;
 }
 
@@ -267,4 +270,22 @@ img {
   color: var(--acento);
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+/* Mensajes de estado: carga, error, éxito y vacío (DESIGN.md §4) */
+.mensaje {
+  color: var(--suave);
+}
+
+.mensaje-error {
+  color: var(--error);
+}
+
+.mensaje-exito {
+  color: var(--exito);
+}
+
+.mensaje-vacio {
+  color: var(--suave);
+  text-align: center;
 }
