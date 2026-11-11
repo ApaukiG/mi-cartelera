@@ -230,16 +230,19 @@ Fuentes: `docs/prd/PRD.md`, `docs/backlog/historias.md`, `docs/backlog/refinamie
 ### E2-T15 — Mejora visual de la E1
 
 - **Tipo:** style
-- **Descripción:** aplicar a las pantallas de la E1 el sistema de `DESIGN.md` sin cambiar su comportamiento. Resuelve las deudas D-01 y D-04 de `docs/ESTADO-INICIAL.md`:
+- **Descripción:** aplicar a las pantallas de la E1 el sistema de `DESIGN.md` sin cambiar su comportamiento. Resuelve las deudas D-01 y D-04 de `docs/ESTADO-INICIAL.md`, y D-21 en la insignia:
   - los resultados del buscador y Mi lista se muestran como cuadrícula de pósters: `.rejilla` > `.tarjeta`, con `.insignia`, `.sin-poster` y `.tarjeta-cuerpo` (D-01);
   - los colores en línea (`red`, `lightgreen`) se sustituyen por `.mensaje-error` y `.mensaje-exito` en `Auth`, `Buscador`, `MiLista` y `Detalle` (D-04). Los textos de carga y de estado vacío de esas pantallas usan `.mensaje` y `.mensaje-vacio`;
   - la cabecera se reordena para que "Cerrar sesión" no quede sola en otra línea: el correo y el botón van juntos (`.cabecera-usuario`) y la navegación pasa a su propia fila;
-  - la vista activa de la navegación se marca visualmente (`nav button[aria-current='page']`).
-- **Cubre:** ninguna historia (deuda técnica de la E1, D-01 y D-04). Spec: `docs/specs/noche-de-pelicula.md` §9.
+  - la vista activa de la navegación se marca visualmente (`nav button[aria-current='page']`);
+  - los controles dentro de `.tarjeta-cuerpo` mantienen su altura natural: el campo de comentario no hereda en vertical el `flex: 1 1 200px` de los inputs de texto (ajuste tras la revisión);
+  - la insignia muestra el tipo legible, "Película" o "Serie", con la función pura `etiquetaTipo` de `src/dominio/tipo.ts` y su test (D-21, ajuste tras la revisión).
+- **Cubre:** ninguna historia (deuda técnica de la E1, D-01, D-04 y D-21 en la insignia). Spec: `docs/specs/noche-de-pelicula.md` §9.
 - **Definition of Done:**
   - Se cumplen DIS-01, DIS-02, DIS-08, DIS-09, DIS-10, DIS-11 y DIS-14 en toda la app, comprobados en el navegador.
-  - La E1 se comporta igual: el recorrido R-01 a R-08 de `docs/VERIFICACION.md` da el mismo resultado y ningún texto cambia.
-  - No cambia ningún archivo de `src/lib/`, `src/dominio/` ni `src/components/noche/`.
+  - La E1 se comporta igual: el recorrido R-01 a R-08 de `docs/VERIFICACION.md` da el mismo resultado y ningún texto cambia, salvo la insignia del tipo ("Película" / "Serie").
+  - No cambia ningún archivo de `src/lib/` ni de `src/components/noche/`. En `src/dominio/` solo se agregan `tipo.ts` y `tipo.test.ts`.
+  - El campo de comentario de la tarjeta tiene la misma altura que los selects.
   - Las clases y los selectores nuevos están en `DESIGN.md` y en `docs/diseno/brand-board.html` antes de usarse.
   - `npm test`, `npm run lint` y `npm run build` pasan.
 - **Dependencias:** E2-T14.
